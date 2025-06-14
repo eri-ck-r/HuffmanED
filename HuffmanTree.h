@@ -1,191 +1,126 @@
 #include <cstdio>
 #include <string>
+#include "MinHeap.h"
+#include "FileReader.h"
+
+#define and &&
+#define or ||
 
 using std::string;
 
-class Node
+
+class HuffmanTree
 {
-  friend class ArvBinBusca;
-
-public:
-    Node();
-    Node(int key, char simb);
-    ~Node();
-    void print(const char* sep = "");
-
-private:
-    int key;
-    char simb;
-    Node* parent;
-    Node* left;
-    Node* right;
-};
-
-
-class ArvBinBusca
-{
-public:
-  ArvBinBusca();
-  ArvBinBusca(const ArvBinBusca& outro); // construtor de cópia
-  ~ArvBinBusca();
-  ArvBinBusca& operator=(const ArvBinBusca& outro); // operador de atribuição
+public: 
+  HuffmanTree();
+  HuffmanTree(MinHeap& h);
+  ~HuffmanTree();
 
   void escreve_ordenado(); // escreve em percurso em-ordem
   void escreve();
 
   Node* get_raiz(); // devolve a raiz
-  Node* busca(int k); // devolve o ponteiro para um elemento, se achar, ou NULL
-  Node* minimo(); // devolve o menor elemento da árvore
-  Node* maximo(); // devolve o maior elemento da árvore
-  Node* sucessor(Node* x); // devolve o sucessor de um elemento
-  Node* predecessor(Node* x); // devolve o predecessor de um elemento
-
-  void insere(int chave);
-  bool remove(int chave);
-
+ 
   void limpa(); // remove todos elementos da árvore
 
 private:
-  Node* raiz;
+  Node* root;
 
   void escreve_ordenado(Node* x); // escreve em percurso em-ordem
   void escreve(const string& prefixo, Node* x);
 
-  Node* busca(Node* x, int k);
-  Node* minimo(Node* x);
-  Node* maximo(Node* x);
-
-  void insere(Node* z);
-  void transplante(Node* u, Node* v);
-  void remove(Node* z);
-
   void limpa(Node* x); // dado um nó x, remove recursivamente elementos abaixo e deleta x
 
-  void copia(const ArvBinBusca& T); // copia uma árvore T para a atual a partir da raiz,
-                                    // usada no construtor de cópia e no operador de atribuição
-  void copia(Node* dest, Node* orig);   // copia um nó e os descendentes recursivamente
 };
-
-
-//***********************************
-//*** IMPLEMENTAÇÕES DA CLASSE NODE ***
-//***********************************
-Node::Node() :
-  key(0),
-  simb('\0'),
-  parent(nullptr),
-  left(nullptr),
-  right(nullptr)
-  {}
-
-Node::Node(int key, char simb) :
-  key(key),
-  simb(simb),
-  parent(nullptr),
-  left(nullptr),
-  right(nullptr)
-  {}
-
-Node::~Node()
-{
-    delete this;
-}
-
-void Node::print(const char *sep)
-{
-  printf("%d%s", key, sep);
-}
 
 
 //********************************************
 //*** IMPLEMENTAÇÕES DA CLASSE ARVBINBUSCA ***
 //********************************************
 
-ArvBinBusca::ArvBinBusca()
+HuffmanTree::HuffmanTree()
 {
-  raiz = nullptr;
+  root = nullptr;
 }
 
-ArvBinBusca::ArvBinBusca(const ArvBinBusca& outro)
+HuffmanTree::HuffmanTree(MinHeap& h)
 {
-  copia(outro);
+  while(h.S.size() > 1){
+    Node* n = new Node();
+    n->left = h.extrai_minimo();
+    n->right = h.extrai_minimo();
+    n->key = n->left->key + n->right->key;
+    h.insere(n);
+  }
+  h.extrai_minimo();
 }
 
-ArvBinBusca::~ArvBinBusca()
+HuffmanTree::~HuffmanTree()
 {
   limpa();
 }
 
-ArvBinBusca& ArvBinBusca::operator=(const ArvBinBusca& outro)
+void HuffmanTree::escreve_ordenado()
 {
-  limpa();
-  copia(outro);
-  return *this;
-}
-
-void ArvBinBusca::escreve_ordenado()
-{
-  escreve_ordenado(raiz);
+  escreve_ordenado(root);
   putchar('\n');
 }
 
-void ArvBinBusca::escreve_ordenado(Node* x)
+void HuffmanTree::escreve_ordenado(Node* x)
 {
-  //TODO: implementar (escrever em percurso em-ordem em uma única linha)
+  if (x == nullptr)
+    return;
+  else{
+    escreve_ordenado(x->left);
+    x->print();
+    escreve_ordenado(x->right);
+  }
 }
 
-void ArvBinBusca::escreve()
+void HuffmanTree::escreve()
 {
-  escreve("", raiz);
+  escreve("", root);
 }
 
-void ArvBinBusca::escreve(const string& prefixo, No *x)
+void HuffmanTree::escreve(const string& prefixo, Node* x)
 {
   if (x == nullptr)
     return;
 
-  bool ehDireito = x->pai and x->pai->dir == x;
-  bool temIrmaoEsq = x->pai and x->pai->esq;
+  bool ehDireito = (x->parent and x->parent->right == x);
+  bool temIrmaoEsq = x->parent and x->parent->left;
 
   printf(prefixo.c_str());
   printf(ehDireito and temIrmaoEsq ? "├──" : "└──" );
 
-  if (x->pai == nullptr) // raiz
+  if (x->parent == nullptr) // raiz
     x->escreve("\n");
   else
     x->escreve(ehDireito ? "d\n" : "e\n");
 
-  escreve(prefixo + (ehDireito and temIrmaoEsq ? "│   " : "    "), x->dir);
-  escreve(prefixo + (ehDireito and temIrmaoEsq ? "│   " : "    "), x->esq);
+  escreve(prefixo + (ehDireito and temIrmaoEsq ? "│   " : "    "), x->right);
+  escreve(prefixo + (ehDireito and temIrmaoEsq ? "│   " : "    "), x->left);
 }
 
-Node* ArvBinBusca::get_raiz()
+Node* HuffmanTree::get_raiz()
 {
-  return raiz;
+  return root;
 }
 
-void ArvBinBusca::limpa()
+void HuffmanTree::limpa()
 {
-  limpa(raiz);
+  limpa(root);
   raiz = nullptr;
 }
 
-void ArvBinBusca::limpa(Node* x)
+void HuffmanTree::limpa(Node* x)
 {
-  //TODO: implementar
-}
-
-void ArvBinBusca::copia(const ArvBinBusca& T)
-{
-  if (T.raiz == nullptr)
-    raiz = nullptr;
-  else {
-    raiz = new Node(T.raiz->chave);
-    copia(raiz, T.raiz);
+  if (x == nullptr)
+    return;
+  else{
+    limpa(x->left);
+    limpa(x->right);
+    delete x;
   }
 }
 
-void ArvBinBusca::copia(Node* dest, Node* orig)
-{
-  //TODO: implementar
-}
