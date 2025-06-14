@@ -1,7 +1,0 @@
-# depslib dependency file v1.0
-1749842861 source:c:\users\nathan\documents\faculdade\matérias\programação\ed\trabalho1\huffmaned\minheap\main.cpp
-	<cstdio>
-	<climits>
-	<string>
-	<vector>
-
