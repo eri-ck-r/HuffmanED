@@ -2,16 +2,21 @@
 #include <climits>
 #include <string>
 #include <vector>
+#include "FileReader.h"
+#define and &&
+#define or ||
+
 
 using std::string;
 using std::vector;
 
 class Node;
-class Heap;
+class MinHeap;
 
 class Node
 {
-    friend class Heap;
+    friend class MinHeap;
+    friend class HuffmanTree;
 public:
     Node();
     Node(int key, char simb);
@@ -26,17 +31,19 @@ private:
     Node* right;
 };
 
-class Heap
+class MinHeap
 {
+    friend class HuffmanTree;
 public:
-  Heap();
-  Heap(int n, Node* dados[]);
-  ~Heap();
+  MinHeap();
+  MinHeap(std::vector<Node*> data);
+  MinHeap(const char* fileName);
+  ~MinHeap();
   void escreve_niveis();
   void escreve(const string& prefixo = "", int i = 0);
   void insere(Node* p);
-  Node* consulta_maxima();
-  Node* extrai_maxima();
+  Node* consulta_minimo();
+  Node* extrai_minimo();
   void altera_prioridade(int i, Node* p);
 
 
@@ -85,25 +92,34 @@ void Node::print(const char *sep)
 //*** IMPLEMENTAÇÕES DA CLASSE HEAP ***
 //*************************************
 
-Heap::Heap()
+MinHeap::MinHeap()
 {
 }
 
-Heap::Heap(int n, Node* dados[]) :
-  S(dados, dados + n)
+MinHeap::MinHeap(vector<Node*> nodes) :
+  S(nodes)
 {
     // Starting from the last non-leave element
-    for (int i = n/2 - 1; i >= 0; i--)
+    for (int i = (int)(nodes.size())/2 - 1; i >= 0; i--)
         desce(i);
 }
 
-Heap::~Heap()
+MinHeap::MinHeap(const char *fileName):
+    S(std::move(getNodes(fileName)))
+{
+    for(int i = S.size()/2 - 1; i >=0; i--)
+    {
+        
+    }
+}
+
+MinHeap::~MinHeap()
 {
     for (int i = (int)S.size() - 1; i >= 0; i--)
         delete S[i];
 }
 
-void Heap::escreve_niveis()
+void MinHeap::escreve_niveis()
 {
     int escritos = 0, fim_nivel = 1, sLength = S.size();
 
@@ -119,7 +135,7 @@ void Heap::escreve_niveis()
     putchar('\n');
 }
 
-void Heap::escreve(const string& prefixo, int i)
+void MinHeap::escreve(const string& prefixo, int i)
 {
   if (i < (int) S.size()) {
     bool ehEsquerdo = i % 2 != 0;
@@ -135,29 +151,29 @@ void Heap::escreve(const string& prefixo, int i)
   }
 }
 
-int Heap::pai(int i)
+int MinHeap::pai(int i)
 {
     return (i - 1) / 2;
 }
 
-int Heap::esquerdo(int i)
+int MinHeap::esquerdo(int i)
 {
     return 2 * (i + 1) - 1;
 }
 
-int Heap::direito(int i)
+int MinHeap::direito(int i)
 {
     return 2 * (i + 1);
 }
 
-void Heap::troca(int i, int j)
+void MinHeap::troca(int i, int j)
 {
     Node* aux = S[i];
     S[i] = S[j];
     S[j] = aux;
 }
 
-void Heap::desce(int i)
+void MinHeap::desce(int i)
 {
     int e, d, menor;
     e = esquerdo(i);
@@ -174,7 +190,7 @@ void Heap::desce(int i)
     }
 }
 
-void Heap::sobe(int i)
+void MinHeap::sobe(int i)
 {
     while (S[pai(i)]->key > S[i]->key) {
         troca(i, pai(i));
@@ -182,18 +198,18 @@ void Heap::sobe(int i)
     }
 }
 
-void Heap::insere(Node* p)
+void MinHeap::insere(Node* p)
 {
     S.push_back(p);
     sobe(S.size()-1);
 }
 
-Node* Heap::consulta_minima()
+Node* MinHeap::consulta_minimo()
 {
     return S[0];
 }
 
-Node* Heap::extrai_minima()
+Node* MinHeap::extrai_minimo()
 {
     Node* menor;
     if (S.size() > 0) {
@@ -207,7 +223,7 @@ Node* Heap::extrai_minima()
         return nullptr;
 }
 
-void Heap::altera_prioridade(int i, Node* p)
+void MinHeap::altera_prioridade(int i, Node* p)
 {
     Node* antiga = S[i];
     S[i] = p;
