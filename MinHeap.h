@@ -1,3 +1,5 @@
+#ifndef __MinHeap_h
+#define __MinHeap_h
 #include <cstdio>
 #include <climits>
 #include <string>
@@ -17,6 +19,7 @@ class Node
 {
     friend class MinHeap;
     friend class HuffmanTree;
+    friend class HuffmanTable;
 public:
     Node();
     Node(int key, char simb);
@@ -100,17 +103,13 @@ MinHeap::MinHeap(vector<Node*> nodes) :
   S(nodes)
 {
     // Starting from the last non-leave element
-    for (int i = (int)(nodes.size())/2 - 1; i >= 0; i--)
+    for (int i = (int)(S.size())/2 - 1; i >= 0; i--)
         desce(i);
 }
 
-MinHeap::MinHeap(const char *fileName):
-    S(std::move(getNodes(fileName)))
+MinHeap::MinHeap(const char *fileName)
 {
-    for(int i = S.size()/2 - 1; i >=0; i--)
-    {
-        
-    }
+    MinHeap(getNodes(fileName));
 }
 
 MinHeap::~MinHeap()
@@ -233,3 +232,5 @@ void MinHeap::altera_prioridade(int i, Node* p)
         sobe(i);
     delete antiga;
 }
+
+#endif

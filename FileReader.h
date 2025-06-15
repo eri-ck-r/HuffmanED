@@ -7,25 +7,26 @@
 #include <memory>
 #include "MinHeap.h"
 
-std::unique_ptr<unsigned[]> getFrequencies(const char* fileName)
+int* getFrequencies(const char* fileName)
 {
 	std::ifstream reader(fileName);
 	if (!reader.is_open())
 		return nullptr;
-	auto frequencies = std::make_unique<unsigned[]>(256);
+	int frequencies[256]{};
 	std::string line{};
 	while (std::getline(reader, line))
 	{
 		for (auto c : line)
 			frequencies[(int)c]++;
-		
+#ifdef _DEBUG
 		std::cout << line << std::endl;
+#endif
 	}
+#ifdef _DEBUG
 	for (int i = 0; i < 256; i++)
 		std::cout << "symbol " << (char)i << " freq : " << frequencies[i] << std::endl;
-
+#endif
 	reader.close();
-	
 	return frequencies;
 }
 
@@ -38,7 +39,6 @@ auto getNodes(const char* fileName)
 		if(frequencies[i] > 0)
 			nodes.push_back(new Node{frequencies[i], (char)i});
 	}
-
 	return nodes;
 }
 

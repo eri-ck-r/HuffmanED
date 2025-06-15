@@ -11,6 +11,7 @@ using std::string;
 
 class HuffmanTree
 {
+  friend class HuffmanTable;
 public: 
   HuffmanTree();
   HuffmanTree(MinHeap& h);
@@ -25,6 +26,7 @@ public:
 
 private:
   Node* root;
+  int nLeaves;
 
   void escreve_ordenado(Node* x); // escreve em percurso em-ordem
   void escreve(const string& prefixo, Node* x);
@@ -43,9 +45,10 @@ HuffmanTree::HuffmanTree()
   root = nullptr;
 }
 
-HuffmanTree::HuffmanTree(MinHeap& h)
+HuffmanTree::HuffmanTree(MinHeap& h):
+nLeaves((int)h.S.size())
 {
-  while(h.S.size() > 1){
+  while((int)h.S.size() > 1){
     Node* n = new Node();
     n->left = h.extrai_minimo();
     n->right = h.extrai_minimo();
@@ -94,9 +97,9 @@ void HuffmanTree::escreve(const string& prefixo, Node* x)
   printf(ehDireito and temIrmaoEsq ? "├──" : "└──" );
 
   if (x->parent == nullptr) // raiz
-    x->escreve("\n");
+    x->print("\n");
   else
-    x->escreve(ehDireito ? "d\n" : "e\n");
+    x->print(ehDireito ? "d\n" : "e\n");
 
   escreve(prefixo + (ehDireito and temIrmaoEsq ? "│   " : "    "), x->right);
   escreve(prefixo + (ehDireito and temIrmaoEsq ? "│   " : "    "), x->left);
