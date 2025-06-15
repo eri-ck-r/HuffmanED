@@ -52,6 +52,7 @@ void HuffmanTable::build(Node* x)
             codes[(int)x->simb] = std::vector<unsigned>(stack);
             leaves.push_back(x->simb);
         }
+        
         stack.push_back(0);
         build(x->left);
         stack.pop_back();

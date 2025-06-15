@@ -123,7 +123,6 @@ void MinHeap::escreve_niveis()
     int escritos = 0, fim_nivel = 1, sLength = S.size();
 
     for(int i = 0; i < sLength; i++) {
-        // Equivalente a for (unsigned i = 0; i < S.size(); i++) { printf("%d ", S[i]);
         S[i]->print();
         if (++escritos == fim_nivel) {
             putchar('\n');
