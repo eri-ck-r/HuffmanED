@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <string>
+#include <vector>
 #include "MinHeap.h"
 #include "FileReader.h"
 
@@ -7,7 +8,7 @@
 #define or ||
 
 using std::string;
-
+using std::vector;
 
 class HuffmanTree
 {
@@ -15,6 +16,7 @@ class HuffmanTree
 public: 
   HuffmanTree();
   HuffmanTree(MinHeap& h);
+  HuffmanTree(vector<unsigned> treeCode, vector<char> leaves);
   ~HuffmanTree();
 
   void escreve_ordenado(); // escreve em percurso em-ordem
@@ -28,6 +30,7 @@ private:
   Node* root;
   int nLeaves;
 
+  void build(vector<unsigned> treeCode, vector<char> leaves, unsigned* i, char* s, Node* x);
   void escreve_ordenado(Node* x); // escreve em percurso em-ordem
   void escreve(const string& prefixo, Node* x);
 
@@ -58,9 +61,45 @@ nLeaves((int)h.S.size())
   h.extrai_minimo();
 }
 
+/**Constructor which takes a coded Huffman tree and the simbols
+ */
+HuffmanTree::HuffmanTree(vector<unsigned> treeCode, vector<char> leaves):
+nLeaves((int)leaves.size())
+{
+  if ((int)treeCode.size() > 0){
+    unsigned* i = treeCode.front();
+    char* s = leaves.front();
+    root = new Node();
+    build(treeCode, leaves, i, root); // at first, the node* received its the root
+  }
+}
+
 HuffmanTree::~HuffmanTree()
 {
   limpa();
+}
+
+void HuffmanTree::build(vector<unsigned> treeCode, vector<char> leaves, unsigned* i, char* s, Node* x)
+{
+  if (x == nullptr)
+    return;
+  else{
+    // if x is a branch
+    if ((*i) == 0){
+      Node* l = new Node(), r = new Node();
+      x->left = l;
+      x->right = r;
+      r->parent = l->parent = x;
+
+      build(treeCode, leaves, i++, x->left);
+      build(treeCode, leaves, i, x->right);
+    }
+    else{
+      //its a leave
+      x->simb = (*s);
+      s++;
+    }
+  }
 }
 
 void HuffmanTree::escreve_ordenado()

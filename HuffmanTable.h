@@ -40,7 +40,7 @@ leaves(T.nLeaves)
 void HuffmanTable::build(Node* x)
 {
     if (x == nullptr)
-        return nullptr;
+        return;
     else{
         // its a branch
         if (x->left != nullptr or x->right != nullptr){
