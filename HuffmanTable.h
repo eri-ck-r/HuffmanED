@@ -13,20 +13,22 @@ using std::vector;
 
 class HuffmanTable
 {
+    friend class HuffmansAlgorithm;
+
     public:
         HuffmanTable(const HuffmanTree& T);
         HuffmanTable(const char* fileName);
     private:
         vector<vector<unsigned>> codes;
         vector<unsigned> stack;
-        vector<unsigned> treeCode;
+        vector<int> treeCode;
         vector<char> leaves;  // Símbolos pré-ordem da árvore de Huffman
         void build(Node* x);
 };
 
-//*************************************
+//*********************************************
 //*** IMPLEMENTAÇÕES DA CLASSE HuffmanTable ***
-//*************************************
+//*********************************************
 
 HuffmanTable::HuffmanTable(const HuffmanTree& T) :
 codes(256),
