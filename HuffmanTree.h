@@ -1,3 +1,5 @@
+#ifndef __HuffmanTree_h
+#define __HuffmanTree_h
 #include <cstdio>
 #include <string>
 #include <vector>
@@ -170,3 +172,4 @@ void HuffmanTree::limpa(Node* x)
   }
 }
 
+#endif // __HuffmanTree_h

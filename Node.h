@@ -46,6 +46,6 @@ void Node::print(const char* sep) const
     //printf("%d%s", key, sep);
 }
 
-#endif
+#endif // __Node_h
 
 

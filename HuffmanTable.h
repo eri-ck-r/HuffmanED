@@ -1,3 +1,5 @@
+#ifndef __HuffmanTable_h
+#define __HuffmanTable_h
 #include <cstdio>
 #include <string>
 #include <vector>
@@ -58,3 +60,4 @@ void HuffmanTable::build(Node* x)
         stack.pop_back();
     }
 }
+#endif // __HuffmanTable_h
