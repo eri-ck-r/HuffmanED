@@ -4,6 +4,7 @@
 #include "MinHeap.h"
 #include "FileReader.h"
 #include "Node.h"
+#include "Node.h"
 
 
 
@@ -13,7 +14,7 @@ class HuffmanTree
 public: 
   HuffmanTree();
   HuffmanTree(MinHeap& h);
-  HuffmanTree(std::vector<unsigned> treeCode, std::vector<char> leaves);
+  HuffmanTree(vector<unsigned> treeCode, vector<char> leaves);
   ~HuffmanTree();
 
   void escreve_ordenado(); // escreve em percurso em-ordem
@@ -134,7 +135,7 @@ void HuffmanTree::escreve(const std::string& prefixo, Node* x)
   bool temIrmaoEsq = x->parent && x->parent->left;
 
   printf(prefixo.c_str());
-  printf(ehDireito & temIrmaoEsq ? "├──" : "└──" );
+  printf(ehDireito && temIrmaoEsq ? "├──" : "└──" );
 
   if (x->parent == nullptr) // raiz
     x->print("\n");
