@@ -3,12 +3,9 @@
 #include <vector>
 #include "MinHeap.h"
 #include "FileReader.h"
+#include "Node.h"
 
-#define and &&
-#define or ||
 
-using std::string;
-using std::vector;
 
 class HuffmanTree
 {
@@ -16,13 +13,14 @@ class HuffmanTree
 public: 
   HuffmanTree();
   HuffmanTree(MinHeap& h);
-  HuffmanTree(vector<unsigned> treeCode, vector<char> leaves);
+  HuffmanTree(std::vector<unsigned> treeCode, std::vector<char> leaves);
   ~HuffmanTree();
 
   void escreve_ordenado(); // escreve em percurso em-ordem
   void escreve();
 
   Node* get_raiz(); // devolve a raiz
+  int get_leaves(); // devolve nLeaves
  
   void limpa(); // remove todos elementos da árvore
 
@@ -32,7 +30,7 @@ private:
 
   void build(unsigned* i, char* s, Node* x);
   void escreve_ordenado(Node* x); // escreve em percurso em-ordem
-  void escreve(const string& prefixo, Node* x);
+  void escreve(const std::string& prefixo, Node* x);
 
   void limpa(Node* x); // dado um nó x, remove recursivamente elementos abaixo e deleta x
 
@@ -40,7 +38,7 @@ private:
 
 
 //********************************************
-//*** IMPLEMENTAÇÕES DA CLASSE ARVBINBUSCA ***
+//*** IMPLEMENTAÇÕES DA CLASSE HUFFMANTREE ***
 //********************************************
 
 HuffmanTree::HuffmanTree()
@@ -63,7 +61,7 @@ nLeaves((int)h.S.size())
 
 /**Constructor which takes a coded Huffman tree and the simbols
  */
-HuffmanTree::HuffmanTree(vector<unsigned> treeCode, vector<char> leaves):
+HuffmanTree::HuffmanTree(std::vector<unsigned> treeCode, std::vector<char> leaves):
 nLeaves((int)leaves.size())
 {
   if ((int)treeCode.size() > 0){
@@ -88,10 +86,11 @@ void HuffmanTree::build(unsigned* i, char* s, Node* x)
   else{
     // if x is a branch
     if ((*i) == 0){
-      Node* l = new Node(), r = new Node();
-      x->left = l;
-      x->right = r;
-      r->parent = l->parent = x;
+        Node* l = new Node();
+        Node* r = new Node();
+        x->left = l;
+        x->right = r;
+        r->parent = l->parent = x;
 
       build(++i, s, x->left);
       build(++i, s, x->right);
@@ -126,29 +125,34 @@ void HuffmanTree::escreve()
   escreve("", root);
 }
 
-void HuffmanTree::escreve(const string& prefixo, Node* x)
+void HuffmanTree::escreve(const std::string& prefixo, Node* x)
 {
   if (x == nullptr)
     return;
 
-  bool ehDireito = (x->parent and x->parent->right == x);
-  bool temIrmaoEsq = x->parent and x->parent->left;
+  bool ehDireito = (x->parent && x->parent->right == x);
+  bool temIrmaoEsq = x->parent && x->parent->left;
 
   printf(prefixo.c_str());
-  printf(ehDireito and temIrmaoEsq ? "├──" : "└──" );
+  printf(ehDireito & temIrmaoEsq ? "├──" : "└──" );
 
   if (x->parent == nullptr) // raiz
     x->print("\n");
   else
     x->print(ehDireito ? "d\n" : "e\n");
 
-  escreve(prefixo + (ehDireito and temIrmaoEsq ? "│   " : "    "), x->right);
-  escreve(prefixo + (ehDireito and temIrmaoEsq ? "│   " : "    "), x->left);
+  escreve(prefixo + (ehDireito && temIrmaoEsq ? "│   " : "    "), x->right);
+  escreve(prefixo + (ehDireito && temIrmaoEsq ? "│   " : "    "), x->left);
 }
 
 Node* HuffmanTree::get_raiz()
 {
   return root;
+}
+
+int HuffmanTree::get_leaves()
+{
+  return nLeaves;
 }
 
 void HuffmanTree::limpa()

@@ -33,7 +33,7 @@ public:
 
 int DEBUG_BITS = 1;
 
-
+/*
 int main(int argc, char *argv[])
 {
   FILE *f1 = fopen(argv[1], "rb");
@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
   fclose(f2);
   return 0;
 }
-
+*/
 
 void escrever_binario(uint8_t numero)
 {

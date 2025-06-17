@@ -122,10 +122,12 @@
     <ClCompile Include="..\FileReader2.cpp" />
     <ClCompile Include="..\HuffmansAlgorithm.cpp" />
     <ClCompile Include="..\Main.cpp" />
+    <ClCompile Include="..\MinHeapTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\BufferBits.h" />
     <ClInclude Include="..\FileReader.h" />
+    <ClInclude Include="..\HuffmanTable.h" />
     <ClInclude Include="..\HuffmanTree.h" />
     <ClInclude Include="..\MinHeap.h" />
   </ItemGroup>
