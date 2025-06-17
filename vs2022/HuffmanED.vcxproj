@@ -126,6 +126,7 @@
   <ItemGroup>
     <ClInclude Include="..\BufferBits.h" />
     <ClInclude Include="..\FileReader.h" />
+    <ClInclude Include="..\HuffmanTable.h" />
     <ClInclude Include="..\HuffmanTree.h" />
     <ClInclude Include="..\MinHeap.h" />
   </ItemGroup>
