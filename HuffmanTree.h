@@ -3,9 +3,6 @@
 #include "MinHeap.h"
 #include "FileReader.h"
 
-#define and &&
-#define or ||
-
 using std::string;
 
 

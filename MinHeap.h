@@ -5,8 +5,6 @@
 #include <string>
 #include <vector>
 #include "FileReader.h"
-#define and &&
-#define or ||
 
 
 using std::string;
@@ -36,7 +34,7 @@ private:
 
 class MinHeap
 {
-    friend class HuffmanTree;
+  friend class HuffmanTree;
 public:
   MinHeap();
   MinHeap(std::vector<Node*> data);
@@ -176,11 +174,11 @@ void MinHeap::desce(int i)
     int e, d, menor;
     e = esquerdo(i);
     d = direito(i);
-    if (e < (int) S.size() && S[e]->key < S[i]->key)
+    if (e < (int) S.size() and S[e]->key < S[i]->key)
         menor = e;
     else
         menor = i;
-    if (d < (int) S.size() && S[d]->key < S[menor]->key)
+    if (d < (int) S.size() and S[d]->key < S[menor]->key)
         menor = d;
     if (menor != i) {
         troca(i, menor);

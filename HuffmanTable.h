@@ -21,7 +21,7 @@ class HuffmanTable
     private:
         vector<vector<unsigned>> codes;
         vector<unsigned> stack;
-        vector<int> treeCode;
+        vector<unsigned> treeCode;
         vector<char> leaves;  // Símbolos pré-ordem da árvore de Huffman
         void build(Node* x);
 };
@@ -42,7 +42,7 @@ leaves(T.nLeaves)
 void HuffmanTable::build(Node* x)
 {
     if (x == nullptr)
-        return nullptr;
+        return;
     else{
         // its a branch
         if (x->left != nullptr or x->right != nullptr){

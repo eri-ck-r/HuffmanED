@@ -52,7 +52,7 @@ void HuffmansAlgorithm::compact(char* argv[])
 
     for(int i = 0, size = table.treeCode.size(); i < size; ++i) // Adiciona os bits do percurso em ordem na árvore de Huffman
     {
-        uint8_t bit = table.treeCode[i] << size-i;
+        uint8_t bit = table.treeCode[i] << write_buffer.livres();
         write_buffer.escreve_bit(bit); 
     }
 
@@ -60,16 +60,29 @@ void HuffmansAlgorithm::compact(char* argv[])
     FILE* original = fopen(argv[2], "rb");
     while(!feof(original))
     {
-        uint8_t original_byte, compacted_byte;
+        uint8_t original_byte;
 
         fread(&original_byte, 1, 1, original);
-        
+
+        vector<unsigned> simb_code(table.codes[original_byte]);
+        for(int i = 0, size = simb_code.size(); i < size; ++i) // Compacta o byte original
+        {
+            uint8_t bit = simb_code[i] << write_buffer.livres();
+            write_buffer.escreve_bit(bit);
+        }
     }
+    uint8_t n_bits = write_buffer.livres(); // Guarda os bits de sobra do último byte
+
+    write_buffer.descarrega(); // Escreve o último byte
+
+    fseek(compacted, 3, SEEK_SET);
+    fwrite(&n_bits, 1, 1, compacted);
 
     fclose(compacted);
+    fclose(original);
 }
 
 void HuffmansAlgorithm::discompact(char* argv[])
 {
-
+    
 }
