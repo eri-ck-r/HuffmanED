@@ -1,124 +1,86 @@
 #ifndef __MinHeap_h
 #define __MinHeap_h
+
 #include <cstdio>
 #include <climits>
 #include <string>
 #include <vector>
 #include "FileReader.h"
-#define and &&
-#define or ||
-
-
-using std::string;
-using std::vector;
+#include "Node.h"
 
 class Node;
 class MinHeap;
-
-class Node
-{
-    friend class MinHeap;
-    friend class HuffmanTree;
-    friend class HuffmanTable;
-public:
-    Node();
-    Node(int key, char simb);
-    ~Node();
-    void print(const char *sep = " ");
-
-private:
-    int key;
-    char simb;
-    Node* parent;
-    Node* left;
-    Node* right;
-};
 
 class MinHeap
 {
     friend class HuffmanTree;
 public:
-  MinHeap();
-  MinHeap(std::vector<Node*> data);
-  MinHeap(const char* fileName);
-  ~MinHeap();
-  void escreve_niveis();
-  void escreve(const string& prefixo = "", int i = 0);
-  void insere(Node* p);
-  Node* consulta_minimo();
-  Node* extrai_minimo();
-  void altera_prioridade(int i, Node* p);
+    MinHeap() = default;
 
+    MinHeap(const char*);
+
+    ~MinHeap() = default;
+
+    void escreve_niveis() const;
+
+    void escreve(const std::string& prefixo = "", int i = 0) const;
+
+    void insere(Node* p);
+
+    Node* consulta_minimo() const;
+
+    Node* extrai_minimo();
+
+    void altera_prioridade(int i, Node* p);
+
+    int size() const
+    {
+        return _size;
+    }
 
 private:
-  vector<Node*> S;
+    std::vector<Node*> S;
+    int _size{};
 
-  int pai(int i);
-  int esquerdo(int i);
-  int direito(int i);
-  void troca(int i, int j);
-  void desce(int i);
-  void sobe(int i);
+    int pai(int i) const;
+
+    int esquerdo(int i) const;
+
+    int direito(int i) const;
+
+    void troca(int i, int j);
+
+    void desce(int i);
+
+    void sobe(int i);
 };
-
-
-//*************************************
-//*** IMPLEMENTAÇÕES DA CLASSE NODE ***
-//*************************************
-Node::Node() :
-  key(0),
-  simb('\0'),
-  parent(nullptr),
-  left(nullptr),
-  right(nullptr)
-  {}
-
-Node::Node(int key, char simb) :
-  key(key),
-  simb(simb),
-  parent(nullptr),
-  left(nullptr),
-  right(nullptr)
-  {}
-
-Node::~Node()
-{
-    delete this;
-}
-
-void Node::print(const char *sep)
-{
-    printf("%d%s", key, sep);
-}
 
 //*************************************
 //*** IMPLEMENTAÇÕES DA CLASSE HEAP ***
 //*************************************
 
-MinHeap::MinHeap()
-{
-}
 
-MinHeap::MinHeap(vector<Node*> nodes) :
-  S(nodes)
+
+MinHeap::MinHeap(const char* fileName) :
+  S(std::move(getNodes(fileName)))
 {
+    _size = S.size();
+
     // Starting from the last non-leave element
-    for (int i = (int)(S.size())/2 - 1; i >= 0; i--)
+    for (int i = S.size() / 2 - 1; i >= 0; i--)
+    {
         desce(i);
+    }
 }
 
-MinHeap::MinHeap(const char *fileName)
-{
-    MinHeap(getNodes(fileName));
-}
+//TODO: REMOVE OR FIX
+//MinHeap::~MinHeap()
+//{
+//    for (int i = (int)S.size() - 1; i >= 0; i--)
+//        delete S[i];
+//}
 
-MinHeap::~MinHeap()
-{
-    for (int i = (int)S.size() - 1; i >= 0; i--)
-        delete S[i];
-}
-
-void MinHeap::escreve_niveis()
+void MinHeap::escreve_niveis() const
 {
     int escritos = 0, fim_nivel = 1, sLength = S.size();
 
@@ -133,14 +95,14 @@ void MinHeap::escreve_niveis()
     putchar('\n');
 }
 
-void MinHeap::escreve(const string& prefixo, int i)
+void MinHeap::escreve(const std::string& prefixo, int i) const
 {
   if (i < (int) S.size()) {
     bool ehEsquerdo = i % 2 != 0;
     bool temIrmao = i < (int) S.size()-1;
 
     printf(prefixo.c_str());
-    printf(ehEsquerdo and temIrmao ? "├──" : "└──" );
+    printf(ehEsquerdo && temIrmao ? "├──" : "└──" );
 
     S[i]->print("\n");
 
@@ -149,17 +111,17 @@ void MinHeap::escreve(const string& prefixo, int i)
   }
 }
 
-int MinHeap::pai(int i)
+int MinHeap::pai(int i) const
 {
     return (i - 1) / 2;
 }
 
-int MinHeap::esquerdo(int i)
+int MinHeap::esquerdo(int i) const
 {
     return 2 * (i + 1) - 1;
 }
 
-int MinHeap::direito(int i)
+int MinHeap::direito(int i) const
 {
     return 2 * (i + 1);
 }
@@ -188,6 +150,7 @@ void MinHeap::desce(int i)
     }
 }
 
+//essa função também não é utilizada, talvez seja bom remover
 void MinHeap::sobe(int i)
 {
     while (S[pai(i)]->key > S[i]->key) {
@@ -196,13 +159,15 @@ void MinHeap::sobe(int i)
     }
 }
 
+//acho que essa função nao precisa pq o vetor já vem com todos os nós inseridos, so faltar executar a função sobe
 void MinHeap::insere(Node* p)
 {
-    S.push_back(p);
+    //S.push_back(p) nao faz sentido essa linha;
     sobe(S.size()-1);
+    _size++;
 }
 
-Node* MinHeap::consulta_minimo()
+Node* MinHeap::consulta_minimo() const
 {
     return S[0];
 }
@@ -215,6 +180,7 @@ Node* MinHeap::extrai_minimo()
         S[0] = S.back(); // ou S[S.size()-1]
         S.pop_back();
         desce(0);
+        _size--;
         return menor;
     }
     else
