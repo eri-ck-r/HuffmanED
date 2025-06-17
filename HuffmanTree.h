@@ -4,9 +4,6 @@
 #include "MinHeap.h"
 #include "FileReader.h"
 #include "Node.h"
-#include "Node.h"
-
-
 
 class HuffmanTree
 {
@@ -14,7 +11,7 @@ class HuffmanTree
 public: 
   HuffmanTree();
   HuffmanTree(MinHeap& h);
-  HuffmanTree(vector<unsigned> treeCode, vector<char> leaves);
+  HuffmanTree(std::vector<unsigned> treeCode, std::vector<char> leaves);
   ~HuffmanTree();
 
   void escreve_ordenado(); // escreve em percurso em-ordem
