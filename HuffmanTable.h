@@ -5,22 +5,16 @@
 #include "MinHeap.h"
 #include "HuffmanTree.h"
 
-#define and &&
-#define or ||
-
-using std::string;
-using std::vector;
-
 class HuffmanTable
 {
     public:
         HuffmanTable(const HuffmanTree& T);
         HuffmanTable(const char* fileName);
     private:
-        vector<vector<unsigned>> codes;
-        vector<unsigned> stack;
-        vector<unsigned> treeCode;
-        vector<char> leaves;  // Símbolos pré-ordem da árvore de Huffman
+        std::vector<std::vector<unsigned>> codes;
+        std::vector<unsigned> stack;
+        std::vector<unsigned> treeCode;
+        std::vector<char> leaves;  // Símbolos pré-ordem da árvore de Huffman
         void build(Node* x);
 };
 
@@ -43,7 +37,7 @@ void HuffmanTable::build(Node* x)
         return;
     else{
         // its a branch
-        if (x->left != nullptr or x->right != nullptr){
+        if (x->left != nullptr || x->right != nullptr){
             treeCode.push_back(0); // puts the encoding 0 for a branch
         }
         else{
