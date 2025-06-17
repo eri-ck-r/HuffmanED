@@ -18,9 +18,8 @@ public:
     MinHeap() = default;
 
     MinHeap(const char*);
-
-    //remover?
-    //MinHeap(std::vector<Node*>);
+    
+    MinHeap(std::vector<Node*>);
 
     ~MinHeap() = default;
 
@@ -64,15 +63,17 @@ private:
 
 
 MinHeap::MinHeap(const char* fileName):
-  S(std::move(getNodes(fileName)))
+  MinHeap(getNodes(fileName))
 {
-    _size = S.size();
+    // do nothing
+}
 
-    // Starting from the last non-leave element
-    for (int i = S.size() / 2 - 1; i >= 0; i--)
-    {
+MinHeap::MinHeap(std::vector<Node*> nodes) :
+    S(std::move(nodes))
+{
+    _size = (int)S.size();
+    for (int i = ((int)S.size() / 2) - 1; i >= 0; i--)
         desce(i);
-    }
 }
 
 //TODO: REMOVE OR FIX
@@ -84,7 +85,7 @@ MinHeap::MinHeap(const char* fileName):
 
 void MinHeap::escreve_niveis() const
 {
-    int escritos = 0, fim_nivel = 1, sLength = S.size();
+    int escritos = 0, fim_nivel = 1, sLength = (int)S.size();
 
     for(int i = 0; i < sLength; i++) {
         S[i]->print();
@@ -164,7 +165,7 @@ void MinHeap::sobe(int i)
 void MinHeap::insere(Node* p)
 {
     S.push_back(p);
-    sobe(S.size()-1);
+    sobe((int)S.size()-1);
     _size++;
 }
 
@@ -188,4 +189,4 @@ Node* MinHeap::extrai_minimo()
         return nullptr;
 }
 
-#endif
+#endif // __MinHeap_h
