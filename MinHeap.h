@@ -19,20 +19,21 @@ public:
 
     MinHeap(const char*);
 
-class MinHeap
-{
-    friend class HuffmanTree;
-public:
-  MinHeap();
-  MinHeap(std::vector<Node*> data);
-  MinHeap(const char* fileName);
-  ~MinHeap();
-  void escreve_niveis();
-  void escreve(const string& prefixo = "", int i = 0);
-  void insere(Node* p);
-  Node* consulta_minimo();
-  Node* extrai_minimo();
-  void altera_prioridade(int i, Node* p);
+    //remover?
+    //MinHeap(std::vector<Node*>);
+
+    ~MinHeap() = default;
+
+    void escreve_niveis() const;
+
+    void escreve(const std::string& prefixo = "", int i = 0) const;
+
+    void insere(Node* p);
+
+    Node* consulta_minimo() const;
+
+    Node* extrai_minimo();
+
 
     int size() const
     {
@@ -62,7 +63,7 @@ private:
 
 
 
-MinHeap::MinHeap(const char* fileName) :
+MinHeap::MinHeap(const char* fileName):
   S(std::move(getNodes(fileName)))
 {
     _size = S.size();
@@ -160,10 +161,9 @@ void MinHeap::sobe(int i)
     }
 }
 
-//acho que essa função nao precisa pq o vetor já vem com todos os nós inseridos, so faltar executar a função sobe
 void MinHeap::insere(Node* p)
 {
-    //S.push_back(p) nao faz sentido essa linha;
+    S.push_back(p);
     sobe(S.size()-1);
     _size++;
 }
@@ -186,17 +186,6 @@ Node* MinHeap::extrai_minimo()
     }
     else
         return nullptr;
-}
-
-void MinHeap::altera_prioridade(int i, Node* p)
-{
-    Node* antiga = S[i];
-    S[i] = p;
-    if (p->key > antiga->key)
-        desce(i);
-    else
-        sobe(i);
-    delete antiga;
 }
 
 #endif
