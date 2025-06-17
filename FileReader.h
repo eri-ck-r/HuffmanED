@@ -5,24 +5,32 @@
 #include <fstream>
 #include <string>
 #include <memory>
-#include "MinHeap.h"
+#include <vector>
+#include "Node.h"
+//#define _TEST
+
+
+int* getFrequencies(const char*);
+std::vector<Node*> getNodes(const char*);
+
 
 int* getFrequencies(const char* fileName)
 {
 	std::ifstream reader(fileName);
 	if (!reader.is_open())
 		return nullptr;
-	int frequencies[256]{};
+	int* frequencies = new int[256]();
 	std::string line{};
 	while (std::getline(reader, line))
 	{
 		for (auto c : line)
 			frequencies[(int)c]++;
-#ifdef _DEBUG
+#ifdef _TEST
 		std::cout << line << std::endl;
 #endif
 	}
-#ifdef _DEBUG
+#ifdef _TEST
+	std::cout << std::endl;
 	for (int i = 0; i < 256; i++)
 		std::cout << "symbol " << (char)i << " freq : " << frequencies[i] << std::endl;
 #endif
@@ -30,7 +38,7 @@ int* getFrequencies(const char* fileName)
 	return frequencies;
 }
 
-auto getNodes(const char* fileName)
+std::vector<Node*> getNodes(const char* fileName)
 {
 	auto frequencies = getFrequencies(fileName);
 	std::vector<Node*> nodes;
