@@ -7,6 +7,8 @@
 
 class HuffmanTable
 {
+    friend class HuffmansAlgorithm;
+
     public:
         HuffmanTable(const HuffmanTree& T);
         HuffmanTable(const char* fileName);
@@ -18,9 +20,9 @@ class HuffmanTable
         void build(Node* x);
 };
 
-//*************************************
+//*********************************************
 //*** IMPLEMENTAÇÕES DA CLASSE HuffmanTable ***
-//*************************************
+//*********************************************
 
 HuffmanTable::HuffmanTable(const HuffmanTree& T) :
 codes(256),

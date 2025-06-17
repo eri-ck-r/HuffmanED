@@ -20,6 +20,7 @@ public:
   void escreve();
 
   Node* get_raiz(); // devolve a raiz
+  int get_leaves(); // devolve nLeaves
  
   void limpa(); // remove todos elementos da árvore
 
@@ -37,7 +38,7 @@ private:
 
 
 //********************************************
-//*** IMPLEMENTAÇÕES DA CLASSE ARVBINBUSCA ***
+//*** IMPLEMENTAÇÕES DA CLASSE HUFFMANTREE ***
 //********************************************
 
 HuffmanTree::HuffmanTree()
@@ -145,6 +146,11 @@ void HuffmanTree::escreve(const std::string& prefixo, Node* x)
 Node* HuffmanTree::get_raiz()
 {
   return root;
+}
+
+int HuffmanTree::get_leaves()
+{
+  return nLeaves;
 }
 
 void HuffmanTree::limpa()

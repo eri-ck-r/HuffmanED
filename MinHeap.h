@@ -19,19 +19,20 @@ public:
 
     MinHeap(const char*);
 
-    ~MinHeap() = default;
-
-    void escreve_niveis() const;
-
-    void escreve(const std::string& prefixo = "", int i = 0) const;
-
-    void insere(Node* p);
-
-    Node* consulta_minimo() const;
-
-    Node* extrai_minimo();
-
-    void altera_prioridade(int i, Node* p);
+class MinHeap
+{
+    friend class HuffmanTree;
+public:
+  MinHeap();
+  MinHeap(std::vector<Node*> data);
+  MinHeap(const char* fileName);
+  ~MinHeap();
+  void escreve_niveis();
+  void escreve(const string& prefixo = "", int i = 0);
+  void insere(Node* p);
+  Node* consulta_minimo();
+  Node* extrai_minimo();
+  void altera_prioridade(int i, Node* p);
 
     int size() const
     {
