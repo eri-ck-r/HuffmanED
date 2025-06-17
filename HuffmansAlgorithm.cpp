@@ -2,7 +2,7 @@
 #include "FileReader.h"
 #include "MinHeap.h"
 #include "HuffmanTree.h"
-#include "pilha.h"
+
  
 int main(int argc, char* argv[])
 {
