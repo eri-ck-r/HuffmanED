@@ -63,10 +63,10 @@ HuffmanTree::HuffmanTree(std::vector<unsigned> treeCode, std::vector<char> leave
 nLeaves((int)leaves.size())
 {
   if ((int)treeCode.size() > 0){
-    unsigned* i = treeCode.front();
-    char* s = leaves.front();
+    unsigned* i = treeCode.data();
+    char* s = leaves.data();
     root = new Node();
-    build(i, s,root); // at first, the node* received its the root
+    build(i, s, root); // at first, the node* received its the root
   }
   else 
     root = nullptr;
