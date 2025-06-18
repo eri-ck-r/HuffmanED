@@ -29,7 +29,7 @@ private:
   Node* root;
   int nLeaves;
 
-  void build(unsigned* i, char* s, Node* x);
+  void decode(unsigned* i, char* s, Node* x);
   void escreve_ordenado(Node* x); // escreve em percurso em-ordem
   void escreve(const std::string& prefixo, Node* x);
 
@@ -70,7 +70,7 @@ nLeaves((int)leaves.size())
     unsigned* i = treeCode.data();
     char* s = leaves.data();
     root = new Node();
-    build(i, s, root); // at first, the node* received its the root
+    decode(i, s, root); // at first, the node* received its the root
   }
   else 
     root = nullptr;
@@ -81,7 +81,7 @@ HuffmanTree::~HuffmanTree()
   limpa();
 }
 
-void HuffmanTree::build(unsigned* i, char* s, Node* x)
+void HuffmanTree::decode(unsigned* i, char* s, Node* x)
 {
   if (x == nullptr)
     return;
@@ -94,8 +94,8 @@ void HuffmanTree::build(unsigned* i, char* s, Node* x)
         x->right = r;
         r->parent = l->parent = x;
 
-      build(++i, s, x->left);
-      build(++i, s, x->right);
+      decode(++i, s, x->left);
+      decode(++i, s, x->right);
     }
     else{
       //its a leave
@@ -139,9 +139,9 @@ void HuffmanTree::escreve(const std::string& prefixo, Node* x)
   printf(ehDireito && temIrmaoEsq ? "├──" : "└──" );
 
   if (x->parent == nullptr) // raiz
-    x->print("\n");
+    x->print(" ");
   else
-    x->print(ehDireito ? "d\n" : "e\n");
+    x->print(ehDireito ? "d " : "e ");
 
   escreve(prefixo + (ehDireito && temIrmaoEsq ? "│   " : "    "), x->right);
   escreve(prefixo + (ehDireito && temIrmaoEsq ? "│   " : "    "), x->left);

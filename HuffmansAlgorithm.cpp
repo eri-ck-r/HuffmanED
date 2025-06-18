@@ -1,5 +1,4 @@
 #include <fstream>
-#include <iostream>
 #include "FileReader.h"
 #include "MinHeap.h"
 #include "HuffmanTree.h"
@@ -32,24 +31,21 @@ void HuffmansAlgorithm::compact(char* argv[])
     MinHeap mh(nodes);
     
     HuffmanTree tree(mh);
-    
+
     HuffmanTable table(tree);
 
     uint16_t alphabet_size = table.leaves.size();
-    printf("%d\n", alphabet_size);
-
+    uint8_t* bytePtr = reinterpret_cast<uint8_t*>(&alphabet_size);
+    
     //Criar arquivo compactado
     FILE* compacted = fopen(argv[3], "wb");
-    fwrite(&alphabet_size, 2, 1, compacted);
+    fwrite(&bytePtr[1], 1, 1, compacted);
+    fwrite(&bytePtr[0], 1, 1, compacted);
     fseek(compacted, 1, SEEK_CUR); // Pula o 3° byte do arquivo (n° de bits do byte final)
 
-    auto alphabet = table.leaves.data();
+    char* alphabet = table.leaves.data();
 
-    for(int i = 0; i < alphabet_size; ++i)
-        std::cout << alphabet[i];
-    std::cout << std::endl;
-    
-    fwrite(alphabet, sizeof(alphabet), alphabet_size, compacted);
+    fwrite(alphabet, sizeof(char), alphabet_size, compacted);
 
     // A partir daqui tem que escrever bit a bit (usar BufferBits)
     BufferBitsEscrita write_buffer(compacted);
@@ -69,19 +65,17 @@ void HuffmansAlgorithm::compact(char* argv[])
         fread(&original_byte, 1, 1, original);
 
         std::vector<unsigned> simb_code(table.codes[original_byte]);
-        printf("Escrevendo %c ", original_byte);
-        for (auto i : simb_code)
-            printf("%d", i);
-        putchar('\n');
-        
-        for(auto bit : simb_code) // Compacta o byte original
+        for(int i = 0, size = simb_code.size(); i < size; ++i) // Compacta o byte original
+        {
+            uint8_t bit = simb_code[i] << write_buffer.livres();
             write_buffer.escreve_bit(bit);
+        }
     }
     uint8_t n_bits = write_buffer.livres(); // Guarda os bits de sobra do último byte
 
     write_buffer.descarrega(); // Escreve o último byte
 
-    fseek(compacted, 2, SEEK_SET);
+    fseek(compacted, 3, SEEK_SET);
     fwrite(&n_bits, 1, 1, compacted);
 
     fclose(compacted);
