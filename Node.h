@@ -42,7 +42,7 @@ Node::Node(int key, char simb) :
 
 void Node::print(const char* sep) const
 {
-    std::cout << "key: " << key << sep << "char: " << simb << std::endl;
+    std::cout << "freq: " << key << sep << "char: " << simb << std::endl;
     //printf("%d%s", key, sep);
 }
 
