@@ -158,7 +158,7 @@ int HuffmanTree::get_leaves()
 void HuffmanTree::limpa()
 {
   limpa(root);
-  raiz = nullptr;
+  root = nullptr;
 }
 
 void HuffmanTree::limpa(Node* x)
