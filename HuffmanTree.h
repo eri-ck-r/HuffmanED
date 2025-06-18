@@ -3,6 +3,7 @@
 #include <cstdio>
 #include <string>
 #include <vector>
+#include <queue>
 #include "MinHeap.h"
 #include "FileReader.h"
 #include "Node.h"
@@ -18,15 +19,15 @@ public:
 
   void escreve_ordenado(); // escreve em percurso em-ordem
   void escreve();
-
+  void escreve_bfs();
   Node* get_raiz(); // devolve a raiz
   int get_leaves(); // devolve nLeaves
  
   void limpa(); // remove todos elementos da árvore
 
 private:
-  Node* root;
-  int nLeaves;
+    Node* root{};
+    int nLeaves{};
 
   void build(unsigned* i, char* s, Node* x);
   void escreve_ordenado(Node* x); // escreve em percurso em-ordem
@@ -123,6 +124,29 @@ void HuffmanTree::escreve_ordenado(Node* x)
 void HuffmanTree::escreve()
 {
   escreve("", root);
+}
+
+//imprime a arvore em ordem de nivel, da esquerda pra direita
+//acho que é bom remover quando for entregar pq eu to usando uma heap pronta kk acho q o professor n vai achar mt legal
+//mas por questão de debuggar vale a pena
+void HuffmanTree::escreve_bfs()
+{
+    if (root == nullptr)
+        return;
+    std::queue<Node*> q;
+    q.push(root);
+
+    while (!q.empty())
+    {
+        Node* currentNode = q.front();
+        q.pop();
+        currentNode->print();
+
+        if (currentNode->left)
+            q.push(currentNode->left);
+        if (currentNode->right)
+            q.push(currentNode->right);
+    }
 }
 
 void HuffmanTree::escreve(const std::string& prefixo, Node* x)
