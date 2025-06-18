@@ -33,22 +33,6 @@ public:
 
 int DEBUG_BITS = 1;
 
-/*
-int main(int argc, char *argv[])
-{
-  FILE *f1 = fopen(argv[1], "rb");
-  FILE *f2 = fopen(argv[2], "wb");
-
-  BufferBitsLeitura bl(f1);  // Não usa new, não é Java
-  BufferBitsEscrita be(f2);  // Não usa new, não é Java
-  while(!feof(f1))
-    be.escreve_bit(bl.le_bit());
-
-  fclose(f1);
-  fclose(f2);
-  return 0;
-}
-*/
 
 void escrever_binario(uint8_t numero)
 {
@@ -87,6 +71,7 @@ uint8_t BufferBitsLeitura::le_bit()
     n = 8;
   }
 
+  if (DEBUG_BITS) printf("Leitura:  ");
   if (DEBUG_BITS) printf("n: %d, byte: %d (", n, byte);
   if (DEBUG_BITS) escrever_binario(byte);
 
@@ -108,11 +93,12 @@ BufferBitsEscrita::BufferBitsEscrita(FILE *f) :
 
 void BufferBitsEscrita::escreve_bit(uint8_t bit)
 {
+  if (DEBUG_BITS) printf("Escrita:  ");
   if (DEBUG_BITS) printf("bit: %d, n: %d, byte: %d (", bit, n, byte);
   if (DEBUG_BITS) escrever_binario(byte);
 
   // Adiciona o bit ao byte na posição correta
-  this->byte |= bit << (7-n);
+  this->byte |= bit;
   n++;
 
   if (DEBUG_BITS) printf(") --> %d(", byte);
@@ -125,11 +111,7 @@ void BufferBitsEscrita::escreve_bit(uint8_t bit)
 
 void BufferBitsEscrita::descarrega()
 {
-  // Escreve no arquivo o byte SE ao menos 1 bit tiver sido adicionado ao byte
-  if (n > 0)
-  {
-    fwrite(&this->byte, 1, 1, this->arquivo);
-    n = 0;
-    this->byte = 0;
-  }
+  fwrite(&this->byte, 1, 1, this->arquivo);
+  n = 0;
+  this->byte = 0;
 }

@@ -5,6 +5,7 @@
 #include <climits>
 #include <string>
 #include <vector>
+#include <iostream>
 #include "FileReader.h"
 #include "Node.h"
 
@@ -104,7 +105,7 @@ void MinHeap::escreve(const std::string& prefixo, int i) const
     bool ehEsquerdo = i % 2 != 0;
     bool temIrmao = i < (int) S.size()-1;
 
-    printf(prefixo.c_str());
+    std::cout << prefixo.c_str();
     printf(ehEsquerdo && temIrmao ? "├──" : "└──" );
 
     S[i]->print(" ");

@@ -17,7 +17,7 @@ class HuffmanTable
     private:
         std::vector<std::vector<unsigned>> codes;
         std::vector<unsigned> stack;
-        std::vector<unsigned> treeCode;
+        std::vector<bool> treeCode;
         std::vector<char> leaves;  // Símbolos pré-ordem da árvore de Huffman
         void build(Node* x);
 };
