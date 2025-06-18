@@ -64,7 +64,7 @@ void HuffmansAlgorithm::compact(char* argv[])
 
         fread(&original_byte, 1, 1, original);
 
-        vector<unsigned> simb_code(table.codes[original_byte]);
+        std::vector<unsigned> simb_code(table.codes[original_byte]);
         for(int i = 0, size = simb_code.size(); i < size; ++i) // Compacta o byte original
         {
             uint8_t bit = simb_code[i] << write_buffer.livres();
