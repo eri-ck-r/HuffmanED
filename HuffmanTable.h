@@ -28,9 +28,9 @@ class HuffmanTable
 
 HuffmanTable::HuffmanTable(const HuffmanTree& T) :
 codes(256),
-stack(256),
-treeCode(256),
-leaves(T.nLeaves)
+stack(0),
+treeCode(0),
+leaves(0)
 {
     build(T.root);
 }

@@ -3,6 +3,7 @@
 #include <cstdio>
 #include <string>
 #include <vector>
+#include <iostream>
 #include "MinHeap.h"
 #include "FileReader.h"
 #include "Node.h"
@@ -50,13 +51,14 @@ HuffmanTree::HuffmanTree(MinHeap& h):
 nLeaves((int)h.S.size())
 {
   while((int)h.S.size() > 1){
-    Node* n = new Node();
+
+    Node* n = new Node(0,'0');
     n->left = h.extrai_minimo();
     n->right = h.extrai_minimo();
     n->key = n->left->key + n->right->key;
     h.insere(n);
   }
-  h.extrai_minimo();
+  root = h.extrai_minimo();
 }
 
 /**Constructor which takes a coded Huffman tree and the simbols
@@ -133,7 +135,7 @@ void HuffmanTree::escreve(const std::string& prefixo, Node* x)
   bool ehDireito = (x->parent && x->parent->right == x);
   bool temIrmaoEsq = x->parent && x->parent->left;
 
-  printf(prefixo.c_str());
+  std::cout << prefixo.c_str();
   printf(ehDireito && temIrmaoEsq ? "├──" : "└──" );
 
   if (x->parent == nullptr) // raiz

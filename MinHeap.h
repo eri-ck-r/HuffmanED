@@ -107,7 +107,7 @@ void MinHeap::escreve(const std::string& prefixo, int i) const
     printf(prefixo.c_str());
     printf(ehEsquerdo && temIrmao ? "├──" : "└──" );
 
-    S[i]->print("\n");
+    S[i]->print(" ");
 
     escreve(prefixo + (ehEsquerdo ? "│   " : "    "), esquerdo(i));
     escreve(prefixo + (ehEsquerdo ? "│   " : "    "), direito(i));
