@@ -35,26 +35,20 @@ void HuffmansAlgorithm::compact(char* argv[])
     HuffmanTable table(tree);
 
     uint16_t alphabet_size = table.leaves.size();
-    uint8_t* bytePtr = reinterpret_cast<uint8_t*>(&alphabet_size);
-    
     //Criar arquivo compactado
     FILE* compacted = fopen(argv[3], "wb");
-    fwrite(&bytePtr[1], 1, 1, compacted);
-    fwrite(&bytePtr[0], 1, 1, compacted);
+    fwrite(&alphabet_size, 2, 1, compacted);
     fseek(compacted, 1, SEEK_CUR); // Pula o 3° byte do arquivo (n° de bits do byte final)
 
-    char* alphabet = table.leaves.data();
-
-    fwrite(alphabet, sizeof(char), alphabet_size, compacted);
+    auto alphabet = table.leaves.data();
+    
+    fwrite(alphabet, sizeof(alphabet), alphabet_size, compacted);
 
     // A partir daqui tem que escrever bit a bit (usar BufferBits)
     BufferBitsEscrita write_buffer(compacted);
 
-    for(int i = 0, size = table.treeCode.size(); i < size; ++i) // Adiciona os bits do percurso em ordem na árvore de Huffman
-    {
-        uint8_t bit = table.treeCode[i] << write_buffer.livres();
-        write_buffer.escreve_bit(bit); 
-    }
+    for(int i = 0, n = 8, size = table.treeCode.size(); i < size; ++i, --n) // Adiciona os bits do percurso em ordem na árvore de Huffman
+        write_buffer.escreve_bit(table.treeCode[i] << (n-1));
 
     // Compactação em si do "texto" original
     FILE* original = fopen(argv[2], "rb");
