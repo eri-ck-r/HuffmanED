@@ -9,17 +9,17 @@
 
 class HuffmanTable
 {
-    friend class HuffmansAlgorithm;
+	friend class HuffmansAlgorithm;
 
-    public:
-        HuffmanTable(const HuffmanTree& T);
-        HuffmanTable(const char* fileName);
-    private:
-        std::vector<std::vector<unsigned>> codes;
-        std::vector<unsigned> stack;
-        std::vector<bool> treeCode;
-        std::vector<char> leaves;  // Símbolos pré-ordem da árvore de Huffman
-        void build(Node* x);
+public:
+	HuffmanTable(const HuffmanTree& T);
+	HuffmanTable(const char* fileName);
+private:
+	std::vector<std::vector<unsigned>> codes;
+	std::vector<unsigned> stack;
+	std::vector<bool> treeCode;
+	std::vector<char> leaves;  // Símbolos pré-ordem da árvore de Huffman
+	void build(Node* x);
 };
 
 //*********************************************
@@ -27,37 +27,37 @@ class HuffmanTable
 //*********************************************
 
 HuffmanTable::HuffmanTable(const HuffmanTree& T) :
-codes(256),
-stack(0),
-treeCode(0),
-leaves(0)
+	codes(256),
+	stack(0),
+	treeCode(0),
+	leaves(0)
 {
-    build(T.root);
+	build(T.root);
 }
 
 void HuffmanTable::build(Node* x)
 {
-    if (x == nullptr)
-        return;
-    else{
-        // its a branch
-        if (x->left != nullptr || x->right != nullptr){
-            treeCode.push_back(0); // puts the encoding 0 for a branch
-        }
-        else{
-            // its a leave
-            treeCode.push_back(1); // puts the encoding 1 for a leave
-            codes[(int)x->simb] = std::vector<unsigned>(stack);
-            leaves.push_back(x->simb);
-        }
-        
-        stack.push_back(0);
-        build(x->left);
-        stack.pop_back();
-        
-        stack.push_back(1);
-        build(x->right);
-        stack.pop_back();
-    }
+	if (x == nullptr)
+		return;
+	else {
+		// its a branch
+		if (x->left != nullptr || x->right != nullptr) {
+			treeCode.push_back(0); // puts the encoding 0 for a branch
+		}
+		else {
+			// its a leave
+			treeCode.push_back(1); // puts the encoding 1 for a leave
+			codes[(int)x->simb] = std::vector<unsigned>(stack);
+			leaves.push_back(x->simb);
+		}
+
+		stack.push_back(0);
+		build(x->left);
+		stack.pop_back();
+
+		stack.push_back(1);
+		build(x->right);
+		stack.pop_back();
+	}
 }
 #endif // __HuffmanTable_h
