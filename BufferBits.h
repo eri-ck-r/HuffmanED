@@ -113,11 +113,11 @@ void BufferBitsEscrita::descarrega()
 
   if(DEBUG_BITS)
   {
-    printf("!!!!!!! byte = ");
+    printf("!!!!!!! byte escrito = ");
     escrever_binario(byte);
-    printf("\n");
+    printf("\n\n");
   }
-  
+
   n = 0;
   byte = 0;
 }
