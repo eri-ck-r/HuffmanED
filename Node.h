@@ -8,24 +8,24 @@ class HuffmanTable;
 class Node
 {
 public:
-    friend class MinHeap;
-    friend class HuffmanTree;
-    friend class HuffmanTable;
+	friend class MinHeap;
+	friend class HuffmanTree;
+	friend class HuffmanTable;
 
-    Node() = default;
+	Node() = default;
 
-    Node(int key, char simb);
+	Node(int key, char simb);
 
-    ~Node() = default;
+	~Node() = default;
 
-    void print(const char* sep = " ") const;
+	void print(const char* sep = " ") const;
 
 private:
-    int key{};
-    char simb{};
-    Node* parent{};
-    Node* left{};
-    Node* right{};
+	int key{};
+	char simb{};
+	Node* parent{};
+	Node* left{};
+	Node* right{};
 };
 
 //*************************************
@@ -34,16 +34,16 @@ private:
 
 
 Node::Node(int key, char simb) :
-    key(key),
-    simb(simb)
-{ 
-    //do nothing
+	key(key),
+	simb(simb)
+{
+	//do nothing
 }
 
 void Node::print(const char* sep) const
 {
-    std::cout << "freq: " << key << sep << "char: " << simb << std::endl;
-    //printf("%d%s", key, sep);
+	std::cout << "freq: " << key << sep << "char: " << simb << std::endl;
+	//printf("%d%s", key, sep);
 }
 
 #endif // __Node_h

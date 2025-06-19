@@ -1,3 +1,5 @@
+#ifndef __BufferBits_h
+#define __BufferBits_h
 #include <cstdio>
 #include <cstdint>
 
@@ -136,3 +138,5 @@ void BufferBitsEscrita::descarrega()
 	n = 0;
 	byte = 0;
 }
+
+#endif // __BufferBits_h
