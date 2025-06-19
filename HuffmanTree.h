@@ -13,9 +13,11 @@ class HuffmanTree
 {
   friend class HuffmanTable;
 public: 
+  using boolIterator = std::vector<bool>::iterator;
+  
   HuffmanTree() = default;
   HuffmanTree(MinHeap& h);
-  HuffmanTree(std::vector<unsigned> treeCode, std::vector<char> leaves);
+  HuffmanTree(std::vector<bool> treeCode, std::vector<char>& leaves);
   ~HuffmanTree();
 
   void escreve_ordenado(); // escreve em percurso em-ordem
@@ -24,14 +26,26 @@ public:
 
   Node* get_raiz(); // devolve a raiz
   int get_leaves(); // devolve nLeaves
+  bool go_left();
+  bool go_right();
+  void resetCurrent()
+  {
+		current = root;
+  }
 
+  char& getSimb()
+  {
+	return current->simb;
+  }
+  
   void limpa(); // remove todos elementos da árvore
 
 private:
 	Node* root{};
+	Node* current{};
 	int nLeaves{};
 
-	void decode(unsigned* i, char* s, Node* x);
+	void decode(boolIterator i, char** s, Node* x);
 	void escreve_ordenado(Node* x); // escreve em percurso em-ordem
 	void escreve(const std::string& prefixo, Node* x);
 
@@ -60,14 +74,15 @@ HuffmanTree::HuffmanTree(MinHeap& h) :
 
 /**Constructor which takes a coded Huffman tree and the simbols
  */
-HuffmanTree::HuffmanTree(std::vector<unsigned> treeCode, std::vector<char> leaves) :
+HuffmanTree::HuffmanTree(std::vector<bool> treeCode, std::vector<char>& leaves) :
 	nLeaves((int)leaves.size())
 {
 	if ((int)treeCode.size() > 0) {
-		unsigned* i = treeCode.data();
-		char* s = leaves.data();
+		boolIterator i = treeCode.begin();
+		char* r = leaves.data();
 		root = new Node();
-		decode(i, s, root); // at first, the node* received its the root
+		current = root;
+		decode(i, &r, root); // at first, the node* received its the root
 	}
 	else
 		root = nullptr;
@@ -78,29 +93,33 @@ HuffmanTree::~HuffmanTree()
 	limpa();
 }
 
-void HuffmanTree::decode(unsigned* i, char* s, Node* x)
+void HuffmanTree::decode(boolIterator i, char** s, Node* x)
 {
 	if (x == nullptr)
 		return;
 	else
 	{
 		// if x is a branch
+		std::cout << "*i = " << *i << std::endl;
 		if ((*i) == 0)
 		{
+			x->simb = '!';
 			Node* l = new Node();
 			Node* r = new Node();
 			x->left = l;
 			x->right = r;
 			r->parent = l->parent = x;
-
+			
 			decode(++i, s, x->left);
 			decode(++i, s, x->right);
 		}
 		else
 		{
 			//its a leave
-			x->simb = (*s);
-			s++;
+			printf("O simbolo da folha eh: %c\n", **s);
+			x->simb = (**s);
+			(*s)++;
+			printf("%c\n", **s);
 		}
 	}
 }
@@ -178,10 +197,23 @@ int HuffmanTree::get_leaves()
 	return nLeaves;
 }
 
+bool HuffmanTree::go_left()
+{
+	current = current->left;
+	return current->isLeaf();
+}
+
+bool HuffmanTree::go_right()
+{
+	current = current->right;
+	return current->isLeaf();
+}
+
 void HuffmanTree::limpa()
 {
 	limpa(root);
 	root = nullptr;
+	current = nullptr;
 }
 
 void HuffmanTree::limpa(Node* x)
@@ -194,5 +226,12 @@ void HuffmanTree::limpa(Node* x)
 		delete x;
 	}
 }
+/*
+		!
+	!		A
+  F   ! 
+    S   D
 
+
+*/
 #endif // __HuffmanTree_h

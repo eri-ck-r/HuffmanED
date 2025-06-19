@@ -20,6 +20,11 @@ public:
 
 	void print(const char* sep = " ") const;
 
+	bool isLeaf()
+	{
+		return left && right;
+	}
+
 private:
 	int key{};
 	char simb{};

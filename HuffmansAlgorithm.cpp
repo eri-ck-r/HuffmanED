@@ -4,12 +4,18 @@
 #include "HuffmanTree.h"
 #include "HuffmanTable.h"
 #include "BufferBits.h"
+#include <iostream>
+
+
 
 class HuffmansAlgorithm
 {
 public:
 	static void compact(char* argv[]);
 	static void discompact(char* argv[]);
+
+private:
+	static void discompactSimb(HuffmanTree& t, FILE* f);
 };
 
 int main(int argc, char* argv[])
@@ -40,7 +46,7 @@ void HuffmansAlgorithm::compact(char* argv[])
 		{
 			printf("%c ", (char)i);
 			for (size_t j = 0; j < table.codes[i].size(); j++)
-				printf("%u ", table.codes[i][j]);
+				std::cout << table.codes[i][j] << " ";
 			printf("\n");
 		}
 	}
@@ -66,7 +72,7 @@ void HuffmansAlgorithm::compact(char* argv[])
 	uint8_t original_byte;
 	while (fread(&original_byte, 1, 1, original) == 1)
 	{
-		std::vector<unsigned> simb_code(table.codes[original_byte]);
+		std::vector<bool> simb_code(table.codes[original_byte]);
 
 		if (DEBUG_BITS)
 		{
@@ -93,7 +99,7 @@ void HuffmansAlgorithm::compact(char* argv[])
 void HuffmansAlgorithm::discompact(char* argv[])
 {
 	FILE* compacted = fopen(argv[2], "rb");
-	//FILE* discompacted = fopen(argv[3], "wb");
+	FILE* discompacted = fopen(argv[3], "wb");
 
 	// Faz a leitura do tamanho do "alfabeto" do arquivo compactado
 	uint16_t alphabet_size;
@@ -104,32 +110,97 @@ void HuffmansAlgorithm::discompact(char* argv[])
 	fread(&last_byte_bits, 1, 1, compacted);
 
 	// Guarda os símbolos do "alfabeto"
-	// Bem ineficiente, considero trocar a tipagem de vários vectors em HuffmanTable
-	std::vector<char> alphabet;
-	for (int i = 0; i < alphabet_size; ++i)
-	{
-		char simb;
-		fread(&simb, 1, 1, compacted);
-		alphabet.push_back(simb);
-	}
-	// uint8_t alphabet[alphabet_size];
-	// fread(alphabet, sizeof(alphabet[0]), alphabet_size, compacted);
+	uint8_t* alphabet = new uint8_t[alphabet_size];
+	fread(alphabet, sizeof(alphabet[0]), alphabet_size, compacted);
 
 	// Lê o código da árvore
 	BufferBitsLeitura read_buffer(compacted);
-	std::vector<unsigned int> treeCode;
+	std::vector<bool> treeCode;
 	for (int i = 0, n = 0; n < alphabet_size; ++i)
 	{
 		treeCode.push_back(read_buffer.le_bit());
 		if (treeCode[i] == 1)
 			++n;
 	}
-
+	
 	// Bem ineficiente, considero trocar a tipagem de vários vectors em HuffmanTable
 	std::vector<char> leaves;
 	for (int i = 0; i < alphabet_size; ++i)
 		leaves.push_back(alphabet[i]);
 
+	if (DEBUG_BITS)
+	{
+		std::cout << "codigo da arvore debug " << std::endl;
+		for(size_t i = 0; i < treeCode.size(); ++i)
+		{
+			std::cout << treeCode[i];
+		}
+		std::cout << std::endl;
+		std::cout << "os bagulho dentro de leaves : " << std::endl;
+		for(int i = 0; i < alphabet_size; ++i)
+		{
+			printf("%c", leaves[i]);
+		}
+		std::cout << std::endl;
+	}
+
 	HuffmanTree tree(treeCode, leaves);
-	tree.escreve_ordenado();
+	tree.escreve_bfs();
+
+	// se ler 0, vai parra esquerda se ler 1 para direita, ao cheg
+	//   ar numa folha escreve seu simbolo
+	// Andar na árvore construída consumindo os bits do arquivo compactado,
+	// quando chegar numa folha dar fwrite(descompacted) e começar a andar
+	// de novo na árvore
+	
+	/*
+	if (read_buffer.le_bit() != 0)
+		vai para direita
+	else
+		vai para esquerda
+	if (chegou na folha)
+		reseba
+	*/
+	std::cout << "compacted = " << compacted << std::endl;
+	FILE* eof_sentinel = fopen(argv[2], "rb");
+	fseek(eof_sentinel, 0, SEEK_END);
+	/*
+		5 bits de sobra
+		<- 10101010 101'00000
+
+		8 - last_byte_bits
+	*/
+	std::cout << "eof_sentinel = " << eof_sentinel << " compacted =  " << compacted << std::endl;
+	while(compacted != eof_sentinel)
+	{
+		discompactSimb(tree, compacte);
+	}
+	for(int i = 0; i < 8 - last_byte_bits; ++i)
+	{
+				
+		discompactSimb(tree, compacte);
+	}
+
+}
+
+void HuffmansAlgorithm::discompactSimb(HuffmanTree& t, FILE* f, BufferBitsLeitura buffer)
+{
+	uint8_t compacted_bit = read_buffer.le_bit();
+
+	if (compacted_bit == 0)
+	{
+		if (tree.go_left() == 1)
+		{
+			fwrite(&(tree.getSimb()), 1, 1, discompacted);
+			tree.resetCurrent();
+		}
+	}
+	else
+	{
+		if(tree.go_right() == 1)
+		{
+			fwrite(&(tree.getSimb()), 1, 1, discompacted);
+			tree.resetCurrent();
+		}
+	}
 }

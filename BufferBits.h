@@ -71,7 +71,7 @@ uint8_t BufferBitsLeitura::le_bit()
 	if (n == 0)
 	{
 		if (fread(&this->byte, 1, 1, this->arquivo) == 0)
-			return 2;
+			return 3;
 		n = 8;
 	}
 
