@@ -69,12 +69,12 @@ void HuffmansAlgorithm::compact(char* argv[])
         for(auto bit : simb_code) // Compacta o byte original
             write_buffer.escreve_bit(bit);
     }
-    uint8_t n_bits = write_buffer.livres(); // Guarda os bits de sobra do último byte
+    uint8_t last_byte_bits = write_buffer.livres(); // Guarda os bits de sobra do último byte
 
     write_buffer.descarrega(); // Escreve o último byte
 
     fseek(compacted, 2, SEEK_SET);
-    fwrite(&n_bits, 1, 1, compacted);
+    fwrite(&last_byte_bits, 1, 1, compacted);
 
     fclose(compacted);
     fclose(original);
