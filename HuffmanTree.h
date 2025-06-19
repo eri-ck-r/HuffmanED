@@ -1,6 +1,7 @@
 #ifndef __HuffmanTree_h
 #define __HuffmanTree_h
 #include <cstdio>
+#include <queue>
 #include <string>
 #include <vector>
 #include <iostream>
@@ -12,13 +13,14 @@ class HuffmanTree
 {
   friend class HuffmanTable;
 public: 
-  HuffmanTree();
+  HuffmanTree() = default;
   HuffmanTree(MinHeap& h);
   HuffmanTree(std::vector<unsigned> treeCode, std::vector<char> leaves);
   ~HuffmanTree();
 
   void escreve_ordenado(); // escreve em percurso em-ordem
   void escreve();
+  void escreve_bfs();
 
   Node* get_raiz(); // devolve a raiz
   int get_leaves(); // devolve nLeaves
@@ -26,8 +28,8 @@ public:
   void limpa(); // remove todos elementos da árvore
 
 private:
-  Node* root;
-  int nLeaves;
+    Node* root{};
+    int nLeaves{};
 
   void decode(unsigned* i, char* s, Node* x);
   void escreve_ordenado(Node* x); // escreve em percurso em-ordem
@@ -42,16 +44,12 @@ private:
 //*** IMPLEMENTAÇÕES DA CLASSE HUFFMANTREE ***
 //********************************************
 
-HuffmanTree::HuffmanTree()
-{
-  root = nullptr;
-}
+
 
 HuffmanTree::HuffmanTree(MinHeap& h):
-nLeaves((int)h.S.size())
+    nLeaves(h.size())
 {
   while((int)h.S.size() > 1){
-
     Node* n = new Node(0,'0');
     n->left = h.extrai_minimo();
     n->right = h.extrai_minimo();
@@ -125,6 +123,27 @@ void HuffmanTree::escreve_ordenado(Node* x)
 void HuffmanTree::escreve()
 {
   escreve("", root);
+}
+
+void HuffmanTree::escreve_bfs()
+{
+    if (root == nullptr)
+        return;
+    std::queue<Node*> q;
+    q.push(root);
+    
+    while (!q.empty())
+    {
+        Node* currentNode = q.front();
+        q.pop();
+        currentNode->print();
+
+        if (currentNode->left)
+            q.push(currentNode->left);
+        if (currentNode->right)
+            q.push(currentNode->right);
+    }
+
 }
 
 void HuffmanTree::escreve(const std::string& prefixo, Node* x)
