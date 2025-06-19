@@ -64,11 +64,9 @@ void HuffmansAlgorithm::compact(char* argv[])
 
     // Compactação em si do "texto" original
     FILE* original = fopen(argv[2], "rb");
-    while(!feof(original))
+    uint8_t original_byte;
+    while(fread(&original_byte, 1, 1, original) == 1)
     {
-        uint8_t original_byte;
-
-        fread(&original_byte, 1, 1, original);
         std::vector<unsigned> simb_code(table.codes[original_byte]);
         
         if(DEBUG_BITS)
