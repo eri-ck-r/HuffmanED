@@ -29,7 +29,7 @@ private:
 };
 
 //*************************************
-//*** IMPLEMENTAÇÕES DA CLASSE NODE ***
+//*** IMPLEMENTAï¿½ï¿½ES DA CLASSE NODE ***
 //*************************************
 
 

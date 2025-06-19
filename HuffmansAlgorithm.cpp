@@ -69,7 +69,7 @@ void HuffmansAlgorithm::compact(char* argv[])
 
     write_buffer.descarrega(); // Escreve o último byte
 
-    fseek(compacted, 3, SEEK_SET);
+    fseek(compacted, 2, SEEK_SET);
     fwrite(&n_bits, 1, 1, compacted);
 
     fclose(compacted);
