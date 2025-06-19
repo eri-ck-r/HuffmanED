@@ -62,27 +62,25 @@ void HuffmansAlgorithm::compact(char* argv[])
 	for (int i = 0, size = table.treeCode.size(); i < size; ++i) // Adiciona os bits do percurso em ordem da árvore de Huffman
 		write_buffer.escreve_bit(table.treeCode[i]);
 
-	// Compactação em si do "texto" original
-	FILE* original = fopen(argv[2], "rb");
-	while (!feof(original))
-	{
-		uint8_t original_byte;
-
-		fread(&original_byte, 1, 1, original);
-		std::vector<unsigned> simb_code(table.codes[original_byte]);
-
-		if (DEBUG_BITS)
-		{
-			printf("Escrevendo %c ", original_byte);
-			for (auto i : simb_code)
-				std::cout << i;
-			putchar('\n');
-		}
-
-		for (auto bit : simb_code) // Compacta o byte original
-			write_buffer.escreve_bit(bit);
-	}
-	uint8_t last_byte_bits = write_buffer.livres(); // Guarda os bits de sobra do último byte
+    // Compactação em si do "texto" original
+    FILE* original = fopen(argv[2], "rb");
+    uint8_t original_byte;
+    while(fread(&original_byte, 1, 1, original) == 1)
+    {
+        std::vector<unsigned> simb_code(table.codes[original_byte]);
+        
+        if(DEBUG_BITS)
+        {
+            printf("Escrevendo %c ", original_byte);
+            for (auto i : simb_code)
+                std::cout << i;
+            putchar('\n');
+        }
+        
+        for(auto bit : simb_code) // Compacta o byte original
+            write_buffer.escreve_bit(bit);
+    }
+    uint8_t last_byte_bits = write_buffer.livres(); // Guarda os bits de sobra do último byte
 
 	write_buffer.descarrega(); // Escreve o último byte
 
