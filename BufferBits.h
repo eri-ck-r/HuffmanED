@@ -71,7 +71,6 @@ uint8_t BufferBitsLeitura::le_bit()
     n = 8;
   }
 
-  if (DEBUG_BITS) printf("Leitura:  ");
   if (DEBUG_BITS) printf("n: %d, byte: %d (", n, byte);
   if (DEBUG_BITS) escrever_binario(byte);
 
@@ -93,7 +92,6 @@ BufferBitsEscrita::BufferBitsEscrita(FILE *f) :
 
 void BufferBitsEscrita::escreve_bit(uint8_t bit)
 {
-  if (DEBUG_BITS) printf("Escrita:  ");
   if (DEBUG_BITS) printf("bit: %d, n: %d, byte: %d (", bit, n, byte);
   if (DEBUG_BITS) escrever_binario(byte);
 
@@ -111,7 +109,15 @@ void BufferBitsEscrita::escreve_bit(uint8_t bit)
 
 void BufferBitsEscrita::descarrega()
 {
-  fwrite(&this->byte, 1, 1, this->arquivo);
+  fwrite(&byte, 1, 1, arquivo);
+
+  if(DEBUG_BITS)
+  {
+    printf("!!!!!!! byte = ");
+    escrever_binario(byte);
+    printf("\n");
+  }
+  
   n = 0;
-  this->byte = 0;
+  byte = 0;
 }

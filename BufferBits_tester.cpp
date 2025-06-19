@@ -15,7 +15,19 @@ int main(int argc, char *argv[])
   BufferBitsLeitura bl(f1);  // Não usa new, não é Java
   BufferBitsEscrita be(f2);  // Não usa new, não é Java
   while(!feof(f1))
-    be.escreve_bit(bl.le_bit());
+  {
+    uint8_t byte_lido = 0;
+    for(int i = 0; i < 8; i++)  // Constrói um byte inteiro a partir de bits lidos
+    {
+      byte_lido |= bl.le_bit();
+    }
+    
+    for(int i = 0; i < 8; ++i)  // Escreve bit a bit a partir de byte inteiro construido anteriormente
+    {
+      uint8_t bit = (byte_lido & (1 << (7-i))) != 0 ? 1 : 0;
+      be.escreve_bit(bit);
+    }
+  }
 
   fclose(f1);
   fclose(f2);
