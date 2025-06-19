@@ -46,11 +46,24 @@ void HuffmansAlgorithm::compact(char* argv[])
     
     fwrite(alphabet, sizeof(alphabet), alphabet_size, compacted);
 
+    
     // A partir daqui tem que escrever bit a bit (usar BufferBits)
     BufferBitsEscrita write_buffer(compacted);
 
-    for(int i = 0, n = 8, size = table.treeCode.size(); i < size; ++i, --n) // Adiciona os bits do percurso em ordem na árvore de Huffman
-        write_buffer.escreve_bit(table.treeCode[i] << (n-1));
+    
+    for(size_t i  = 0; i < table.codes.size(); i++)
+    {
+        printf("%c ", (char)i);
+        for(size_t j = 0; j < table.codes[i].size(); j++)
+            printf("%u ", table.codes[i][j]);
+        printf("\n");
+    }
+
+    for(int i = 0, n = 8, size = table.treeCode.size(); i < size; ++i, n--) // Adiciona os bits do percurso em ordem na árvore de Huffman
+    {
+        uint8_t bit = table.treeCode[i];
+        write_buffer.escreve_bit(bit);
+    }
 
     // Compactação em si do "texto" original
     FILE* original = fopen(argv[2], "rb");
@@ -63,7 +76,7 @@ void HuffmansAlgorithm::compact(char* argv[])
         std::vector<unsigned> simb_code(table.codes[original_byte]);
         printf("Escrevendo %c ", original_byte);
         for (auto i : simb_code)
-            printf("%d", i);
+            std::cout << i;
         putchar('\n');
         
         for(auto bit : simb_code) // Compacta o byte original

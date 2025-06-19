@@ -98,7 +98,7 @@ void BufferBitsEscrita::escreve_bit(uint8_t bit)
   if (DEBUG_BITS) escrever_binario(byte);
 
   // Adiciona o bit ao byte na posição correta
-  this->byte |= bit;
+  this->byte |= bit << (7-n);
   n++;
 
   if (DEBUG_BITS) printf(") --> %d(", byte);
