@@ -92,5 +92,44 @@ void HuffmansAlgorithm::compact(char* argv[])
 
 void HuffmansAlgorithm::discompact(char* argv[])
 {
+	FILE* compacted = fopen(argv[2], "rb");
+	//FILE* discompacted = fopen(argv[3], "wb");
 
+	// Faz a leitura do tamanho do "alfabeto" do arquivo compactado
+	uint16_t alphabet_size;
+	fread(&alphabet_size, 2, 1, compacted);
+
+	// Guarda quanto bits de sobra tem o último byte compactado
+	uint8_t last_byte_bits;
+	fread(&last_byte_bits, 1, 1, compacted);
+
+	// Guarda os símbolos do "alfabeto"
+	// Bem ineficiente, considero trocar a tipagem de vários vectors em HuffmanTable
+	std::vector<char> alphabet;
+	for (int i = 0; i < alphabet_size; ++i)
+	{
+		char simb;
+		fread(&simb, 1, 1, compacted);
+		alphabet.push_back(simb);
+	}
+	// uint8_t alphabet[alphabet_size];
+	// fread(alphabet, sizeof(alphabet[0]), alphabet_size, compacted);
+
+	// Lê o código da árvore
+	BufferBitsLeitura read_buffer(compacted);
+	std::vector<unsigned int> treeCode;
+	for (int i = 0, n = 0; n < alphabet_size; ++i)
+	{
+		treeCode.push_back(read_buffer.le_bit());
+		if (treeCode[i] == 1)
+			++n;
+	}
+
+	// Bem ineficiente, considero trocar a tipagem de vários vectors em HuffmanTable
+	std::vector<char> leaves;
+	for (int i = 0; i < alphabet_size; ++i)
+		leaves.push_back(alphabet[i]);
+
+	HuffmanTree tree(treeCode, leaves);
+	tree.escreve_ordenado();
 }
