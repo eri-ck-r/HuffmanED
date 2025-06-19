@@ -42,10 +42,10 @@ std::vector<Node*> getNodes(const char* fileName)
 {
 	auto frequencies = getFrequencies(fileName);
 	std::vector<Node*> nodes;
-	for(int i = 0; i < 256; i++)
+	for (int i = 0; i < 256; i++)
 	{
-		if(frequencies[i] > 0)
-			nodes.push_back(new Node{frequencies[i], (char)i});
+		if (frequencies[i] > 0)
+			nodes.push_back(new Node{ frequencies[i], (char)i });
 	}
 	return nodes;
 }
