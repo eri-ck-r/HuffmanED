@@ -27,6 +27,9 @@
     <ClCompile Include="..\MinHeapTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\BufferBits_tester.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\BufferBits.h">
