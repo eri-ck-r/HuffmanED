@@ -1,5 +1,4 @@
 #include <fstream>
-#include <iostream>
 #include "FileReader.h"
 #include "MinHeap.h"
 #include "HuffmanTree.h"
