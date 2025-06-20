@@ -30,7 +30,7 @@ public:
   bool go_right();
   void resetCurrent()
   {
-		current = root;
+	current = root;
   }
 
   char& getSimb()
@@ -70,6 +70,7 @@ HuffmanTree::HuffmanTree(MinHeap& h) :
 		h.insere(n);
 	}
 	root = h.extrai_minimo();
+	current = root;
 }
 
 /**Constructor which takes a coded Huffman tree and the simbols

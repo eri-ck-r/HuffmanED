@@ -15,7 +15,7 @@ public:
 	static void discompact(char* argv[]);
 
 private:
-	static void discompactSimb(HuffmanTree& t, FILE* f);
+	static void discompactSimb(HuffmanTree& t, FILE* f, BufferBitsLeitura&);
 };
 
 int main(int argc, char* argv[])
@@ -162,45 +162,48 @@ void HuffmansAlgorithm::discompact(char* argv[])
 		reseba
 	*/
 	std::cout << "compacted = " << compacted << std::endl;
-	FILE* eof_sentinel = fopen(argv[2], "rb");
-	fseek(eof_sentinel, 0, SEEK_END);
-	/*
-		5 bits de sobra
-		<- 10101010 101'00000
 
-		8 - last_byte_bits
-	*/
-	std::cout << "eof_sentinel = " << eof_sentinel << " compacted =  " << compacted << std::endl;
-	while(compacted != eof_sentinel)
+	
+	uint8_t var;
+	while(!feof(compacted))
 	{
-		discompactSimb(tree, compacte);
+		discompactSimb(tree, discompacted, read_buffer);
 	}
+	
 	for(int i = 0; i < 8 - last_byte_bits; ++i)
 	{
-				
-		discompactSimb(tree, compacte);
+		discompactSimb(tree, discompacted, read_buffer);
 	}
 
+	fclose(compacted);
+	fclose(discompacted);
 }
 
-void HuffmansAlgorithm::discompactSimb(HuffmanTree& t, FILE* f, BufferBitsLeitura buffer)
+void HuffmansAlgorithm::discompactSimb(HuffmanTree& t, FILE* f, BufferBitsLeitura& buffer)
 {
-	uint8_t compacted_bit = read_buffer.le_bit();
-
+	uint8_t compacted_bit = buffer.le_bit();
+	std::cout << "compacted bit = ";
+	escrever_binario(compacted_bit);
+	std::cout << '\n';
 	if (compacted_bit == 0)
 	{
-		if (tree.go_left() == 1)
+		
+		auto flag = t.go_left();
+		if (flag)
 		{
-			fwrite(&(tree.getSimb()), 1, 1, discompacted);
-			tree.resetCurrent();
+			std::cout << "achou folha no go_left " << std::endl;
+			fwrite(&(t.getSimb()), 1, 1, f);
+			t.resetCurrent();
 		}
 	}
 	else
 	{
-		if(tree.go_right() == 1)
+		auto flag = t.go_right();
+		if(flag)
 		{
-			fwrite(&(tree.getSimb()), 1, 1, discompacted);
-			tree.resetCurrent();
+			std::cout << "achou folha no go_Right " << std::endl;
+			fwrite(&(t.getSimb()), 1, 1, f);
+			t.resetCurrent();
 		}
 	}
 }

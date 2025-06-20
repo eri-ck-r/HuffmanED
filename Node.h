@@ -22,7 +22,7 @@ public:
 
 	bool isLeaf()
 	{
-		return left && right;
+		return left == nullptr && right == nullptr;
 	}
 
 private:
