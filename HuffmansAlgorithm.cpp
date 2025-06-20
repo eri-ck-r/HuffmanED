@@ -6,8 +6,6 @@
 #include "BufferBits.h"
 #include <iostream>
 
-
-
 class HuffmansAlgorithm
 {
 public:
@@ -56,7 +54,9 @@ void HuffmansAlgorithm::compact(char* argv[])
 	// Cria arquivo compactado
 	FILE* compacted = fopen(argv[3], "wb");
 	fwrite(&alphabet_size, 2, 1, compacted);
-	fseek(compacted, 1, SEEK_CUR); // Pula o 3° byte do arquivo (n° de bits do byte final)
+
+	uint8_t zero = 0;
+	fwrite(&zero, 1, 1, compacted);
 
 	auto alphabet = table.leaves.data();
 	fwrite(alphabet, sizeof(alphabet[0]), alphabet_size, compacted);
@@ -85,12 +85,16 @@ void HuffmansAlgorithm::compact(char* argv[])
 		for (auto bit : simb_code) // Compacta o byte original
 			write_buffer.escreve_bit(bit);
 	}
-	uint8_t last_byte_bits = write_buffer.livres(); // Guarda os bits de sobra do último byte
 
-	write_buffer.descarrega(); // Escreve o último byte
-
-	fseek(compacted, 2, SEEK_SET);
-	fwrite(&last_byte_bits, 1, 1, compacted);
+	if(write_buffer.livres() != 8)
+	{
+		uint8_t last_byte_bits = write_buffer.livres(); // Guarda os bits de sobra do último byte
+	
+		write_buffer.descarrega(); // Escreve o último byte
+	
+		fseek(compacted, 2, SEEK_SET);
+		fwrite(&last_byte_bits, 1, 1, compacted);
+	}
 
 	fclose(compacted);
 	fclose(original);
