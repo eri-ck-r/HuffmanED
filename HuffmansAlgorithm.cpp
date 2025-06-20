@@ -147,27 +147,29 @@ void HuffmansAlgorithm::discompact(char* argv[])
 	HuffmanTree tree(treeCode, leaves);
 	tree.escreve_bfs();
 
-	// se ler 0, vai parra esquerda se ler 1 para direita, ao cheg
-	//   ar numa folha escreve seu simbolo
-	// Andar na árvore construída consumindo os bits do arquivo compactado,
-	// quando chegar numa folha dar fwrite(descompacted) e começar a andar
-	// de novo na árvore
-	
-	/*
-	if (read_buffer.le_bit() != 0)
-		vai para direita
-	else
-		vai para esquerda
-	if (chegou na folha)
-		reseba
-	*/
 	std::cout << "compacted = " << compacted << std::endl;
 
+	long beginning, end;
 	
-	uint8_t var;
-	while(!feof(compacted))
+	beginning = ftell(compacted);
+
+	fpos_t cur_pos;
+	fgetpos(compacted, &cur_pos);
+
+	fseek(compacted, 0,  SEEK_END);
+
+	end = ftell(compacted);
+
+	fsetpos(compacted, &cur_pos);
+
+	std::cout << "beginning = " << beginning << std::endl;
+	std::cout << "      end = " << end << std::endl;
+
+	
+	while(beginning < end)
 	{
 		discompactSimb(tree, discompacted, read_buffer);
+		beginning = ftell(compacted);
 	}
 	
 	for(int i = 0; i < 8 - last_byte_bits; ++i)
@@ -182,16 +184,11 @@ void HuffmansAlgorithm::discompact(char* argv[])
 void HuffmansAlgorithm::discompactSimb(HuffmanTree& t, FILE* f, BufferBitsLeitura& buffer)
 {
 	uint8_t compacted_bit = buffer.le_bit();
-	std::cout << "compacted bit = ";
-	escrever_binario(compacted_bit);
-	std::cout << '\n';
 	if (compacted_bit == 0)
 	{
-		
 		auto flag = t.go_left();
 		if (flag)
 		{
-			std::cout << "achou folha no go_left " << std::endl;
 			fwrite(&(t.getSimb()), 1, 1, f);
 			t.resetCurrent();
 		}
@@ -201,7 +198,6 @@ void HuffmansAlgorithm::discompactSimb(HuffmanTree& t, FILE* f, BufferBitsLeitur
 		auto flag = t.go_right();
 		if(flag)
 		{
-			std::cout << "achou folha no go_Right " << std::endl;
 			fwrite(&(t.getSimb()), 1, 1, f);
 			t.resetCurrent();
 		}
