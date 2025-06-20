@@ -13,8 +13,6 @@ class HuffmanTree
 {
   friend class HuffmanTable;
 public: 
-  using boolIterator = std::vector<bool>::iterator;
-  
   HuffmanTree() = default;
   HuffmanTree(MinHeap& h);
   HuffmanTree(std::vector<bool> treeCode, std::vector<char>& leaves);
@@ -45,7 +43,7 @@ private:
 	Node* current{};
 	int nLeaves{};
 
-	void decode(boolIterator i, char** s, Node* x);
+	void decode(int& i, char** s, Node* x, std::vector<bool>& treeCode);
 	void escreve_ordenado(Node* x); // escreve em percurso em-ordem
 	void escreve(const std::string& prefixo, Node* x);
 
@@ -79,11 +77,11 @@ HuffmanTree::HuffmanTree(std::vector<bool> treeCode, std::vector<char>& leaves) 
 	nLeaves((int)leaves.size())
 {
 	if ((int)treeCode.size() > 0) {
-		boolIterator i = treeCode.begin();
+		int i = 0;
 		char* r = leaves.data();
 		root = new Node();
 		current = root;
-		decode(i, &r, root); // at first, the node* received its the root
+		decode(i, &r, root, treeCode); // at first, the node* received its the root
 	}
 	else
 		root = nullptr;
@@ -94,15 +92,15 @@ HuffmanTree::~HuffmanTree()
 	limpa();
 }
 
-void HuffmanTree::decode(boolIterator i, char** s, Node* x)
+void HuffmanTree::decode(int& i, char** s, Node* x, std::vector<bool>& treeCode)
 {
 	if (x == nullptr)
 		return;
 	else
 	{
 		// if x is a branch
-		std::cout << "*i = " << *i << std::endl;
-		if ((*i) == 0)
+		std::cout << "valor de i  = " << treeCode[i] << std::endl;
+		if (treeCode[i] == 0)
 		{
 			x->simb = '!';
 			Node* l = new Node();
@@ -110,9 +108,11 @@ void HuffmanTree::decode(boolIterator i, char** s, Node* x)
 			x->left = l;
 			x->right = r;
 			r->parent = l->parent = x;
-			
-			decode(++i, s, x->left);
-			decode(++i, s, x->right);
+			// i = 0
+			decode(++i, s, x->left, treeCode);
+			// i = 1 
+			decode(++i, s, x->right, treeCode);
+			// i = 2
 		}
 		else
 		{
