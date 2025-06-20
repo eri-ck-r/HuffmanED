@@ -43,6 +43,4 @@ std::vector<Node*> getNodes(const char* fileName)
 	return nodes;
 }
 
-
-
 #endif // __FileReader_h
