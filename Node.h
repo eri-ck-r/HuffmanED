@@ -1,5 +1,6 @@
 #ifndef __Node_h
 #define __Node_h
+#include <cstdint>
 
 class MinHeap;
 class HuffmanTree;
@@ -14,7 +15,7 @@ public:
 
 	Node() = default;
 
-	Node(int key, char simb);
+	Node(int key, uint8_t simb);
 
 	~Node() = default;
 
@@ -27,7 +28,7 @@ public:
 
 private:
 	int key{};
-	char simb{};
+	uint8_t simb{};
 	Node* parent{};
 	Node* left{};
 	Node* right{};
@@ -38,7 +39,7 @@ private:
 //*************************************
 
 
-Node::Node(int key, char simb) :
+Node::Node(int key, uint8_t simb) :
 	key(key),
 	simb(simb)
 {

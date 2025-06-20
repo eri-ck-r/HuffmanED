@@ -126,11 +126,6 @@ void HuffmansAlgorithm::discompact(char* argv[])
 		if (treeCode[i] == 1)
 			++n;
 	}
-	
-	// Bem ineficiente, considero trocar a tipagem de vários vectors em HuffmanTable
-	std::vector<char> leaves;
-	for (int i = 0; i < alphabet_size; ++i)
-		leaves.push_back(alphabet[i]);
 
 	if (DEBUG_BITS)
 	{
@@ -140,15 +135,15 @@ void HuffmansAlgorithm::discompact(char* argv[])
 			std::cout << treeCode[i];
 		}
 		std::cout << std::endl;
-		std::cout << "os bagulho dentro de leaves : " << std::endl;
+		std::cout << "os bagulho dentro de alphabet : " << std::endl;
 		for(int i = 0; i < alphabet_size; ++i)
 		{
-			printf("%c", leaves[i]);
+			printf("%c", alphabet[i]);
 		}
 		std::cout << std::endl;
 	}
 
-	HuffmanTree tree(treeCode, leaves);
+	HuffmanTree tree(treeCode, alphabet, alphabet_size);
 	tree.escreve_bfs();
 
 	std::cout << "compacted = " << compacted << std::endl;

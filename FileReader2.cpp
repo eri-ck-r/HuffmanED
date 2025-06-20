@@ -10,18 +10,6 @@
 #include <cstdint>
 
 
-/*
-Tarefas:
-
-  1. Calcular a frequencia dos caracteres
-
-  2. Criar min-heap e ir usando-a pra criar a árvore de Huffman
-
-  3. Mapear os códigos em uma tabela
-
-  4. Gerar arquivo compactado em si com o cabeçalho
-
-*/
 
 
 int main(int argc, char* argv[])
@@ -41,9 +29,6 @@ int main(int argc, char* argv[])
         }
         for(int i = 0; i < 256; ++i)
         printf("%d (%d)\n", freq[i], i);
-
-        // construir vetor de ponteiros para nós
-        for()
     }
     else  // if(argv[1][0] == 'd')
     {
