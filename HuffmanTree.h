@@ -15,7 +15,7 @@ class HuffmanTree
 public: 
   HuffmanTree() = default;
   HuffmanTree(MinHeap& h);
-  HuffmanTree(std::vector<bool> treeCode, std::vector<char>& leaves);
+  HuffmanTree(std::vector<bool> treeCode, std::vector<unsigned char>& leaves);
   ~HuffmanTree();
 
   void escreve_ordenado(); // escreve em percurso em-ordem
@@ -31,7 +31,7 @@ public:
 	current = root;
   }
 
-  char& getSimb()
+  unsigned char& getSimb()
   {
 	return current->simb;
   }
@@ -43,7 +43,7 @@ private:
 	Node* current{};
 	int nLeaves{};
 
-	void decode(int& i, char** s, Node* x, std::vector<bool>& treeCode);
+	void decode(int& i, unsigned char** s, Node* x, std::vector<bool>& treeCode);
 	void escreve_ordenado(Node* x); // escreve em percurso em-ordem
 	void escreve(const std::string& prefixo, Node* x);
 
@@ -73,12 +73,12 @@ HuffmanTree::HuffmanTree(MinHeap& h) :
 
 /**Constructor which takes a coded Huffman tree and the simbols
  */
-HuffmanTree::HuffmanTree(std::vector<bool> treeCode, std::vector<char>& leaves) :
+HuffmanTree::HuffmanTree(std::vector<bool> treeCode, std::vector<unsigned char>& leaves) :
 	nLeaves((int)leaves.size())
 {
 	if ((int)treeCode.size() > 0) {
 		int i = 0;
-		char* r = leaves.data();
+		unsigned char* r = leaves.data();
 		root = new Node();
 		current = root;
 		decode(i, &r, root, treeCode); // at first, the node* received its the root
@@ -92,7 +92,7 @@ HuffmanTree::~HuffmanTree()
 	limpa();
 }
 
-void HuffmanTree::decode(int& i, char** s, Node* x, std::vector<bool>& treeCode)
+void HuffmanTree::decode(int& i, unsigned char** s, Node* x, std::vector<bool>& treeCode)
 {
 	if (x == nullptr)
 		return;

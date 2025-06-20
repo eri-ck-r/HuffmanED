@@ -18,7 +18,7 @@ private:
 	std::vector<std::vector<bool>> codes;
 	std::vector<bool> stack;
 	std::vector<bool> treeCode;
-	std::vector<char> leaves;  // Símbolos pré-ordem da árvore de Huffman
+	std::vector<unsigned char> leaves;  // Símbolos pré-ordem da árvore de Huffman
 	void build(Node* x);
 };
 

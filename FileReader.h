@@ -21,7 +21,7 @@ int* getFrequencies(const char* fileName)
 		return nullptr;
 	int* frequencies = new int[256]();
 	std::string line{};
-	while (std::getline(reader, line))
+	while (std::getline(reader, line, (char)EOF))
 	{
 		for (auto c : line)
 			frequencies[(int)c]++;
@@ -45,7 +45,7 @@ std::vector<Node*> getNodes(const char* fileName)
 	for (int i = 0; i < 256; i++)
 	{
 		if (frequencies[i] > 0)
-			nodes.push_back(new Node{ frequencies[i], (char)i });
+			nodes.push_back(new Node{ frequencies[i], (unsigned char)i });
 	}
 	return nodes;
 }

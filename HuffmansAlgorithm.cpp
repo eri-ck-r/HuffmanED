@@ -128,7 +128,7 @@ void HuffmansAlgorithm::discompact(char* argv[])
 	}
 	
 	// Bem ineficiente, considero trocar a tipagem de vários vectors em HuffmanTable
-	std::vector<char> leaves;
+	std::vector<unsigned char> leaves;
 	for (int i = 0; i < alphabet_size; ++i)
 		leaves.push_back(alphabet[i]);
 
