@@ -117,10 +117,8 @@ void HuffmanTree::decode(int& i, unsigned char** s, Node* x, std::vector<bool>& 
 		else
 		{
 			//its a leave
-			printf("O simbolo da folha eh: %c\n", **s);
 			x->simb = (**s);
 			(*s)++;
-			printf("%c\n", **s);
 		}
 	}
 }

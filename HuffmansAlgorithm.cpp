@@ -114,7 +114,7 @@ void HuffmansAlgorithm::discompact(char* argv[])
 	fread(&last_byte_bits, 1, 1, compacted);
 
 	// Guarda os símbolos do "alfabeto"
-	uint8_t* alphabet = new uint8_t[alphabet_size];
+	uint8_t* alphabet = new uint8_t[alphabet_size]();
 	fread(alphabet, sizeof(alphabet[0]), alphabet_size, compacted);
 
 	// Lê o código da árvore
@@ -181,6 +181,7 @@ void HuffmansAlgorithm::discompact(char* argv[])
 		discompactSimb(tree, discompacted, read_buffer);
 	}
 
+	delete[] alphabet;
 	fclose(compacted);
 	fclose(discompacted);
 }

@@ -12,8 +12,8 @@ int main(int argc, char* argv[])
 	FILE* f1 = fopen(argv[1], "rb");
 	FILE* f2 = fopen(argv[2], "wb");
 
-	BufferBitsLeitura buffer_leitura(f1);  // Não usa new, não é Java
-	BufferBitsEscrita buffer_escrita(f2);  // Não usa new, não é Java
+	BufferBitsLeitura buffer_leitura(f1);  
+	BufferBitsEscrita buffer_escrita(f2);  
 	while (!feof(f1))
 	{
 		uint8_t byte_lido = 0;
