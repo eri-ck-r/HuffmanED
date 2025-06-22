@@ -13,6 +13,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <queue>
 #include "MinHeap.h"
 #include "FileReader.h"
 #include "Node.h"
