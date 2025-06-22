@@ -2,6 +2,7 @@
  *
  * Nathan de Almeida Rezende
  * Luiz Alexandre Espíndola Cunha
+ * Erick Rodrigues de Lemos Ribeiro
  * Trabalho de Estrutura de Dados
  * Professor(a): Diego Padilha Rubert
  *
@@ -73,13 +74,14 @@ private:
 //*** IMPLEMENTAÇÕES DA CLASSE HEAP ***
 //*************************************
 
-
+/**Construtor da Min Heap que toma o nome do arquivo. */
 MinHeap::MinHeap(const char* fileName) :
 	MinHeap(getNodes(fileName))
 {
 	// do nothing
 }
 
+/**Construtor da Min Heap que toma um vetor de nós. */
 MinHeap::MinHeap(std::vector<Node*> nodes) :
 	S(std::move(nodes))
 {
@@ -88,6 +90,7 @@ MinHeap::MinHeap(std::vector<Node*> nodes) :
 		desce(i);
 }
 
+/**Função que escreve os níveis da Min Heap (vista como se fosse uma árvore). */
 void MinHeap::escreve_niveis() const
 {
 	int escritos = 0, fim_nivel = 1, sLength = (int)S.size();
@@ -103,6 +106,7 @@ void MinHeap::escreve_niveis() const
 	putchar('\n');
 }
 
+/**Função que escreve a min Heap como uma árvore. */
 void MinHeap::escreve(const std::string& prefixo, int i) const
 {
 	if (i < (int)S.size()) {
@@ -119,21 +123,25 @@ void MinHeap::escreve(const std::string& prefixo, int i) const
 	}
 }
 
+/**Função que retorna o pai de um nó, dado seu índice no Min Heap. */
 int MinHeap::pai(int i) const
 {
 	return (i - 1) / 2;
 }
 
+/**Função que retorna o irmão esquerdo de um nó, dado seu índice no Min Heap. */
 int MinHeap::esquerdo(int i) const
 {
 	return 2 * (i + 1) - 1;
 }
 
+/**Função que retorna o irmão direito de um nó, dado seu índice no Min Heap. */
 int MinHeap::direito(int i) const
 {
 	return 2 * (i + 1);
 }
 
+/**Função que os índices de dois nós na Min Heap, e então os troca de posição. */
 void MinHeap::troca(int i, int j)
 {
 	Node* aux = S[i];
@@ -141,6 +149,7 @@ void MinHeap::troca(int i, int j)
 	S[j] = aux;
 }
 
+/**Função que desce o nó na Min Heap caso ele seja maior que seus filhos. */
 void MinHeap::desce(int i)
 {
 	int e, d, menor;
@@ -158,6 +167,7 @@ void MinHeap::desce(int i)
 	}
 }
 
+/**Função que sobre um nó até que a frequência dele seja maior ou igual a de seu pai. */
 void MinHeap::sobe(int i)
 {
 	while (S[pai(i)]->key > S[i]->key) {
@@ -166,6 +176,7 @@ void MinHeap::sobe(int i)
 	}
 }
 
+/**Função que insere o nó p na Min Heap. */
 void MinHeap::insere(Node* p)
 {
 	S.push_back(p);
@@ -173,11 +184,13 @@ void MinHeap::insere(Node* p)
 	_size++;
 }
 
+/**Função que devolve o nó com a menor frequência. */
 Node* MinHeap::consulta_minimo() const
 {
 	return S[0];
 }
 
+/**Função que extrai o nó com a menor frequência. */
 Node* MinHeap::extrai_minimo()
 {
 	Node* menor;

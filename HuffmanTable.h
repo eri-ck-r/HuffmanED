@@ -2,6 +2,7 @@
  *
  * Nathan de Almeida Rezende
  * Luiz Alexandre Espíndola Cunha
+ * Erick Rodrigues de Lemos Ribeiro
  * Trabalho de Estrutura de Dados
  * Professor(a): Diego Padilha Rubert
  *
@@ -36,7 +37,7 @@ private:
 //*** IMPLEMENTAÇÕES DA CLASSE HUFFMANTABLE ***
 //*********************************************
 
-
+/**Construtor da Huffman Table. */
 HuffmanTable::HuffmanTable(const HuffmanTree& T) :
 	codes(256),
 	stack(0),
@@ -46,17 +47,18 @@ HuffmanTable::HuffmanTable(const HuffmanTree& T) :
 	build(T.root);
 }
 
+/**Função que constrói a tabela de Huffman ao percorrer a árvore. */
 void HuffmanTable::build(Node* x)
 {
 	if (x == nullptr)
 		return;
 	
 	if (x->left != nullptr || x->right != nullptr)
-		treeCode.push_back(0); // puts the encoding 0 for a branch
+		treeCode.push_back(0); // coloca o código 0 para ramo
 	else
 	{
-		// its a leave
-		treeCode.push_back(1); // puts the encoding 1 for a leave
+		// é uma folha
+		treeCode.push_back(1); // coloca o código 1 para folha
 		codes[(unsigned)x->simb] = std::vector<bool>(stack);
 		leaves.push_back(x->simb);
 	}

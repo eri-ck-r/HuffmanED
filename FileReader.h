@@ -2,6 +2,7 @@
  *
  * Nathan de Almeida Rezende
  * Luiz Alexandre Espíndola Cunha
+ * Erick Rodrigues de Lemos Ribeiro
  * Trabalho de Estrutura de Dados
  * Professor(a): Diego Padilha Rubert
  *

@@ -2,6 +2,7 @@
  *
  * Nathan de Almeida Rezende
  * Luiz Alexandre Espíndola Cunha
+ * Erick Rodrigues de Lemos Ribeiro
  * Trabalho de Estrutura de Dados
  * Professor(a): Diego Padilha Rubert
  *
@@ -46,7 +47,7 @@ private:
 //*** IMPLEMENTA��ES DA CLASSE NODE ***
 //*************************************
 
-
+/**Construtor do nó que toma uma chave (frequência) e o símbolo da letra, caso houver. */
 Node::Node(int key, unsigned char simb) :
 	key(key),
 	simb(simb)
@@ -54,6 +55,7 @@ Node::Node(int key, unsigned char simb) :
 	//do nothing
 }
 
+/**Função de print do nó */
 void Node::print(const char* sep) const
 {
 	std::cout << "freq: " << key << sep << "char: " << simb << std::endl;

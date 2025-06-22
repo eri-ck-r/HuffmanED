@@ -2,6 +2,7 @@
  *
  * Nathan de Almeida Rezende
  * Luiz Alexandre Espíndola Cunha
+ * Erick Rodrigues de Lemos Ribeiro
  * Trabalho de Estrutura de Dados
  * Professor(a): Diego Padilha Rubert
  *
@@ -13,7 +14,6 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include <queue>
 #include "MinHeap.h"
 #include "FileReader.h"
 #include "Node.h"
@@ -30,9 +30,6 @@ public:
   void escreve_ordenado(); // escreve em percurso em-ordem
   void escreve();
   void escreve_bfs();
-
-//remover? não é utilizado em lugar nenhum
-  Node* get_raiz(); // devolve a raiz
 
   int get_leaves(); // devolve nLeaves
   bool go_left();
@@ -67,7 +64,7 @@ private:
 //*** IMPLEMENTAÇÕES DA CLASSE HUFFMANTREE ***
 //********************************************
 
-
+/**Construtor que, tomado uma Min Heap h, constrói a árvore de Huffman. */
 HuffmanTree::HuffmanTree(MinHeap& h) :
 	nLeaves((int)h.S.size())
 {
@@ -83,7 +80,9 @@ HuffmanTree::HuffmanTree(MinHeap& h) :
 	current = root;
 }
 
-/**Constructor which takes a coded Huffman tree and the simbols
+/**Construtor que toma um vector com a codificação da árvore de Huffman
+ * e com as folhas dela, no percurso pré-ordem, e então constrói a árvore
+ * para decodificação.
  */
 HuffmanTree::HuffmanTree(std::vector<bool> treeCode, std::vector<unsigned char>& leaves) :
 	nLeaves((int)leaves.size())
@@ -93,25 +92,29 @@ HuffmanTree::HuffmanTree(std::vector<bool> treeCode, std::vector<unsigned char>&
 		unsigned char* r = leaves.data();
 		root = new Node();
 		current = root;
-		decode(i, &r, root, treeCode); // at first, the node* received its the root
+		decode(i, &r, root, treeCode); 
 	}
 	else
 		root = nullptr;
 }
 
+/**Destrutor da árvore de Huffman. */
 HuffmanTree::~HuffmanTree()
 {
 	limpa();
 }
 
+/**Função que decodifica o código recebido da árvore e a constrói recursivamente,
+ * tomados um índice para a posição atual no vetor da árvore, um ponteiro para o ponteiro
+ * que indica a posição atual no vetor das folhas, o nó atual, e o vetor da codificação da árvore.
+ */
 void HuffmanTree::decode(int& i, unsigned char** s, Node* x, std::vector<bool>& treeCode)
 {
 	if (x == nullptr)
 		return;
 	else
 	{
-		// if x is a branch
-		std::cout << "valor de i  = " << treeCode[i] << std::endl;
+		// se é um ramo
 		if (treeCode[i] == 0)
 		{
 			x->simb = '!';
@@ -128,19 +131,21 @@ void HuffmanTree::decode(int& i, unsigned char** s, Node* x, std::vector<bool>& 
 		}
 		else
 		{
-			//its a leave
+			// se é uma folha
 			x->simb = (**s);
 			(*s)++;
 		}
 	}
 }
 
+/**Função que escreve a árvore ordenada. */
 void HuffmanTree::escreve_ordenado()
 {
 	escreve_ordenado(root);
 	putchar('\n');
 }
 
+/**Função que escreve a árvore ordenada, considerando um percurso em-ordem. */
 void HuffmanTree::escreve_ordenado(Node* x)
 {
 	if (x == nullptr)
@@ -153,31 +158,13 @@ void HuffmanTree::escreve_ordenado(Node* x)
 	}
 }
 
+/**Função que escreve a árvore. */
 void HuffmanTree::escreve()
 {
 	escreve("", root);
 }
 
-void HuffmanTree::escreve_bfs()
-{
-    if (root == nullptr)
-        return;
-    std::queue<Node*> q;
-    q.push(root);
-    
-    while (!q.empty())
-    {
-        Node* currentNode = q.front();
-        q.pop();
-        currentNode->print();
-
-        if (currentNode->left)
-            q.push(currentNode->left);
-        if (currentNode->right)
-            q.push(currentNode->right);
-    }
-}
-
+/**Função que escreve a árvore tomado um prefixo e o nó atual. */
 void HuffmanTree::escreve(const std::string& prefixo, Node* x)
 {
 	if (x == nullptr)
@@ -198,29 +185,31 @@ void HuffmanTree::escreve(const std::string& prefixo, Node* x)
 	escreve(prefixo + (ehDireito && temIrmaoEsq ? "│   " : "    "), x->left);
 }
 
-//remover? não é utilizado em lugar nenhum
-Node* HuffmanTree::get_raiz()
-{
-	return root;
-}
-
+/**Função que retorna o número de folhas. */
 int HuffmanTree::get_leaves()
 {
 	return nLeaves;
 }
 
+/**Função que move o nó atual para esquerda e retorna true se é folha, ou false caso
+ * contrário.
+ */
 bool HuffmanTree::go_left()
 {
 	current = current->left;
 	return current->isLeaf();
 }
 
+/**Função que move o nó atual para direita e retorna true se é folha, ou false caso
+ * contrário.
+ */
 bool HuffmanTree::go_right()
 {
 	current = current->right;
 	return current->isLeaf();
 }
 
+/**Função que destrói a árvore. */
 void HuffmanTree::limpa()
 {
 	limpa(root);
@@ -228,6 +217,7 @@ void HuffmanTree::limpa()
 	current = nullptr;
 }
 
+/**Função que deleta os nós na árvore em pós-ordem. */
 void HuffmanTree::limpa(Node* x)
 {
 	if (x == nullptr)
