@@ -6,6 +6,9 @@
 #include "BufferBits.h"
 #include <iostream>
 
+// remover essa classe e só tranformar compact e discompact em
+// funçoes normais? pq uma classe sem atributo não faz muito sentido.
+// daria pra usar namespace ao invés de uma classe
 class HuffmansAlgorithm
 {
 public:
@@ -19,9 +22,7 @@ private:
 int main(int argc, char* argv[])
 {
 	if (argv[1][0] == 'c')
-	{
 		HuffmansAlgorithm::compact(argv);
-	}
 	else
 		HuffmansAlgorithm::discompact(argv);
 
