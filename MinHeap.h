@@ -18,6 +18,8 @@ class MinHeap
 public:
 	MinHeap() = default;
 
+	~MinHeap() = default;
+
 	MinHeap(const char*);
 
 	MinHeap(std::vector<Node*>);
@@ -76,13 +78,6 @@ MinHeap::MinHeap(std::vector<Node*> nodes) :
 	for (int i = ((int)S.size() / 2) - 1; i >= 0; i--)
 		desce(i);
 }
-
-//TODO: REMOVE OR FIX
-//MinHeap::~MinHeap()
-//{
-//    for (int i = (int)S.size() - 1; i >= 0; i--)
-//        delete S[i];
-//}
 
 void MinHeap::escreve_niveis() const
 {

@@ -22,7 +22,9 @@ public:
   void escreve();
   void escreve_bfs();
 
+//remover? não é utilizado em lugar nenhum
   Node* get_raiz(); // devolve a raiz
+
   int get_leaves(); // devolve nLeaves
   bool go_left();
   bool go_right();
@@ -186,6 +188,7 @@ void HuffmanTree::escreve(const std::string& prefixo, Node* x)
 	escreve(prefixo + (ehDireito && temIrmaoEsq ? "│   " : "    "), x->left);
 }
 
+//remover? não é utilizado em lugar nenhum
 Node* HuffmanTree::get_raiz()
 {
 	return root;
@@ -225,12 +228,5 @@ void HuffmanTree::limpa(Node* x)
 		delete x;
 	}
 }
-/*
-		!
-	!		A
-  F   ! 
-    S   D
 
-
-*/
 #endif // __HuffmanTree_h

@@ -31,9 +31,7 @@ int main(int argc, char* argv[])
 
 void HuffmansAlgorithm::compact(char* argv[])
 {
-	auto nodes = getNodes(argv[2]);
-
-	MinHeap mh(nodes);
+	MinHeap mh(argv[2]);
 
 	HuffmanTree tree(mh);
 
@@ -71,7 +69,7 @@ void HuffmansAlgorithm::compact(char* argv[])
 	// Compactação em si do "texto" original
 	FILE* original = fopen(argv[2], "rb");
 	uint8_t original_byte;
-	while (fread(&original_byte, 1, 1, original) == 1)
+	while (fread(&original_byte, 1, 1, original))
 	{
 		std::vector<bool> simb_code(table.codes[original_byte]);
 
@@ -152,8 +150,6 @@ void HuffmansAlgorithm::discompact(char* argv[])
 	HuffmanTree tree(treeCode, leaves);
 	tree.escreve_bfs();
 
-	std::cout << "compacted = " << compacted << std::endl;
-
 	long beginning, end;
 	
 	beginning = ftell(compacted);
@@ -166,10 +162,6 @@ void HuffmansAlgorithm::discompact(char* argv[])
 	end = ftell(compacted);
 
 	fsetpos(compacted, &cur_pos);
-
-	std::cout << "beginning = " << beginning << std::endl;
-	std::cout << "      end = " << end << std::endl;
-
 	
 	while(beginning < end)
 	{
@@ -178,9 +170,7 @@ void HuffmansAlgorithm::discompact(char* argv[])
 	}
 	
 	for(int i = 0; i < 8 - last_byte_bits; ++i)
-	{
 		discompactSimb(tree, discompacted, read_buffer);
-	}
 
 	delete[] alphabet;
 	fclose(compacted);
@@ -192,7 +182,7 @@ void HuffmansAlgorithm::discompactSimb(HuffmanTree& t, FILE* f, BufferBitsLeitur
 	uint8_t compacted_bit = buffer.le_bit();
 	if (compacted_bit == 0)
 	{
-		auto flag = t.go_left();
+		bool flag = t.go_left();
 		if (flag)
 		{
 			fwrite(&(t.getSimb()), 1, 1, f);
@@ -201,7 +191,7 @@ void HuffmansAlgorithm::discompactSimb(HuffmanTree& t, FILE* f, BufferBitsLeitur
 	}
 	else
 	{
-		auto flag = t.go_right();
+		bool flag = t.go_right();
 		if(flag)
 		{
 			fwrite(&(t.getSimb()), 1, 1, f);

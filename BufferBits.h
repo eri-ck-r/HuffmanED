@@ -8,8 +8,8 @@
 class BufferBits {
 protected:
 	FILE* arquivo;  // Ponteiro para o arquivo sendo lido/escrito
-	uint8_t byte;   // Buffer com bits de um byte
-	uint8_t n;      /** Quantidade de bits que ainda tem para devolver (leitura) / quantos já escreveu (escrita) */
+	uint8_t byte{};   // Buffer com bits de um byte
+	uint8_t n{};      /** Quantidade de bits que ainda tem para devolver (leitura) / quantos já escreveu (escrita) */
 
 public:
 	BufferBits(FILE* arquivo);  // Construtor padrão com o arquivo que será lido ou escrito
@@ -43,10 +43,9 @@ void escrever_binario(uint8_t numero)
 }
 
 BufferBits::BufferBits(FILE* arquivo) :
-	arquivo(arquivo),
-	byte(0),
-	n(0)
-{
+	arquivo(arquivo)
+{ 
+	//do nothing 
 }
 
 uint8_t BufferBits::ocupados()
@@ -62,6 +61,7 @@ uint8_t BufferBits::livres()
 BufferBitsLeitura::BufferBitsLeitura(FILE* f) :
 	BufferBits(f)
 {
+	//do nothing
 }
 
 uint8_t BufferBitsLeitura::le_bit()
@@ -99,6 +99,7 @@ uint8_t BufferBitsLeitura::le_bit()
 BufferBitsEscrita::BufferBitsEscrita(FILE* f) :
 	BufferBits(f)
 {
+	//do nothing
 }
 
 void BufferBitsEscrita::escreve_bit(uint8_t bit)
