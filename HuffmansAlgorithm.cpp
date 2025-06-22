@@ -1,3 +1,12 @@
+/********************************************
+ *
+ * Nathan de Almeida Rezende
+ * Luiz Alexandre Espíndola Cunha
+ * Trabalho de Estrutura de Dados
+ * Professor(a): Diego Padilha Rubert
+ *
+ */
+
 #include <fstream>
 #include "FileReader.h"
 #include "MinHeap.h"
@@ -6,9 +15,12 @@
 #include "BufferBits.h"
 #include <iostream>
 
-// remover essa classe e só tranformar compact e discompact em
-// funçoes normais? pq uma classe sem atributo não faz muito sentido.
-// daria pra usar namespace ao invés de uma classe
+/**
+ * Classe capaz de acessar todos os atributos
+ * das outras relacionadas à compactação e
+ * descompactação, feita para evitar muitos
+ * getters e setters.
+ */
 class HuffmansAlgorithm
 {
 public:
@@ -19,6 +31,11 @@ private:
 	static void discompactSimb(HuffmanTree& t, FILE* f, BufferBitsLeitura&);
 };
 
+/**
+ * Função main. Por aqui que são recebidos
+ * os nomes dos arquivos da linha de comando
+ * e repassados para a classe acima
+ */
 int main(int argc, char* argv[])
 {
 	if (argv[1][0] == 'c')
@@ -29,6 +46,13 @@ int main(int argc, char* argv[])
 	return 0;
 }
 
+/**
+ * Método criado para compactação.
+ * Recebe o nome do arquivo a ser compactado,
+ * processa seu conteúdo através das outras
+ * classes (MinHeap, HuffmanTree e HuffmanTable)
+ * e cria o arquivo compactado resultante.
+ */
 void HuffmansAlgorithm::compact(char* argv[])
 {
 	MinHeap mh(argv[2]);
@@ -99,6 +123,14 @@ void HuffmansAlgorithm::compact(char* argv[])
 	fclose(original);
 }
 
+/**
+ * Método criado para descompactação.
+ * Recebe o nome do arquivo a ser descompactado,
+ * processa seu cabeçalho através das outras
+ * classes (MinHeap, HuffmanTree e HuffmanTable),
+ * recontrói a árvore de Huffman e descompacta o
+ * arquivo passado.
+ */
 void HuffmansAlgorithm::discompact(char* argv[])
 {
 	FILE* compacted = fopen(argv[2], "rb");
@@ -126,7 +158,6 @@ void HuffmansAlgorithm::discompact(char* argv[])
 			++n;
 	}
 	
-	// Bem ineficiente, considero trocar a tipagem de vários vectors em HuffmanTable
 	std::vector<unsigned char> leaves;
 	for (int i = 0; i < alphabet_size; ++i)
 		leaves.push_back(alphabet[i]);
@@ -177,6 +208,16 @@ void HuffmansAlgorithm::discompact(char* argv[])
 	fclose(discompacted);
 }
 
+/**
+ * Método usado apenas na parte final da
+ * descompactação, para descompactar os
+ * bytes em si do arquivo depois de ter
+ * interpretado o cabeçalho.
+ * Recebe a árvore de Huffman reconstruída,
+ * o arquivo a ser descompactado (partindo
+ * da posição do texto compactado em si) e
+ * o buffer de leitura.
+ */
 void HuffmansAlgorithm::discompactSimb(HuffmanTree& t, FILE* f, BufferBitsLeitura& buffer)
 {
 	uint8_t compacted_bit = buffer.le_bit();

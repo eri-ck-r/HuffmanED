@@ -1,7 +1,15 @@
+/********************************************
+ *
+ * Nathan de Almeida Rezende
+ * Luiz Alexandre Espíndola Cunha
+ * Trabalho de Estrutura de Dados
+ * Professor(a): Diego Padilha Rubert
+ *
+ */
+
 #ifndef __HuffmanTree_h
 #define __HuffmanTree_h
 #include <cstdio>
-#include <queue>
 #include <string>
 #include <vector>
 #include <iostream>
@@ -57,6 +65,7 @@ private:
 //********************************************
 //*** IMPLEMENTAÇÕES DA CLASSE HUFFMANTREE ***
 //********************************************
+
 
 HuffmanTree::HuffmanTree(MinHeap& h) :
 	nLeaves((int)h.S.size())

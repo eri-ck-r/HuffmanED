@@ -1,3 +1,12 @@
+/********************************************
+ *
+ * Nathan de Almeida Rezende
+ * Luiz Alexandre Espíndola Cunha
+ * Trabalho de Estrutura de Dados
+ * Professor(a): Diego Padilha Rubert
+ *
+ */
+
 #ifndef __HuffmanTable_h
 #define __HuffmanTable_h
 #include <cstdio>
@@ -22,9 +31,11 @@ private:
 	void build(Node* x);
 };
 
+
 //*********************************************
-//*** IMPLEMENTAÇÕES DA CLASSE HuffmanTable ***
+//*** IMPLEMENTAÇÕES DA CLASSE HUFFMANTABLE ***
 //*********************************************
+
 
 HuffmanTable::HuffmanTable(const HuffmanTree& T) :
 	codes(256),

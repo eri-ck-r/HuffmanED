@@ -1,3 +1,12 @@
+/********************************************
+ *
+ * Nathan de Almeida Rezende
+ * Luiz Alexandre Espíndola Cunha
+ * Trabalho de Estrutura de Dados
+ * Professor(a): Diego Padilha Rubert
+ *
+ */
+
 #ifndef __BufferBits_h
 #define __BufferBits_h
 #include <cstdio>
@@ -48,11 +57,12 @@ BufferBits::BufferBits(FILE* arquivo) :
 	//do nothing 
 }
 
+// Devolve o número de bits ocupados no buffer
 uint8_t BufferBits::ocupados()
 {
 	return n;
 }
-
+// Devolve o número de bits livres no buffer
 uint8_t BufferBits::livres()
 {
 	return 8 - n;
@@ -64,6 +74,7 @@ BufferBitsLeitura::BufferBitsLeitura(FILE* f) :
 	//do nothing
 }
 
+// Devolve o próximo bit do arquivo de leitura e atualiza o próximo a ser lido
 uint8_t BufferBitsLeitura::le_bit()
 {
 	// Caso n == 0, lê 1 byte do arquivo e colocar no buffer
@@ -102,7 +113,12 @@ BufferBitsEscrita::BufferBitsEscrita(FILE* f) :
 	//do nothing
 }
 
-void BufferBitsEscrita::escreve_bit(uint8_t bit)
+/**
+ * Escreve o próximo bit do byte recebido no byte interno
+ * armazenado no buffer (com base no atributo n do buffer)
+ * e atualiza o valor de n para o próximo bit a ser escrito.
+ */
+ void BufferBitsEscrita::escreve_bit(uint8_t bit)
 {
 	if (DEBUG_BITS)
 	{
@@ -125,6 +141,7 @@ void BufferBitsEscrita::escreve_bit(uint8_t bit)
 		descarrega();
 }
 
+// Escreve o byte atual armazenado no buffer no arquivo de escrita
 void BufferBitsEscrita::descarrega()
 {
 	fwrite(&byte, 1, 1, arquivo);

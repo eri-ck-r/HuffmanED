@@ -1,3 +1,12 @@
+/********************************************
+ *
+ * Nathan de Almeida Rezende
+ * Luiz Alexandre Espíndola Cunha
+ * Trabalho de Estrutura de Dados
+ * Professor(a): Diego Padilha Rubert
+ *
+ */
+
 #ifndef __MinHeap_h
 #define __MinHeap_h
 
@@ -59,10 +68,10 @@ private:
 	void sobe(int i);
 };
 
+
 //*************************************
 //*** IMPLEMENTAÇÕES DA CLASSE HEAP ***
 //*************************************
-
 
 
 MinHeap::MinHeap(const char* fileName) :
@@ -149,7 +158,6 @@ void MinHeap::desce(int i)
 	}
 }
 
-//essa função também não é utilizada, talvez seja bom remover
 void MinHeap::sobe(int i)
 {
 	while (S[pai(i)]->key > S[i]->key) {

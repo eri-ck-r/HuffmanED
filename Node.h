@@ -1,3 +1,12 @@
+/********************************************
+ *
+ * Nathan de Almeida Rezende
+ * Luiz Alexandre Espíndola Cunha
+ * Trabalho de Estrutura de Dados
+ * Professor(a): Diego Padilha Rubert
+ *
+ */
+
 #ifndef __Node_h
 #define __Node_h
 
@@ -48,7 +57,6 @@ Node::Node(int key, unsigned char simb) :
 void Node::print(const char* sep) const
 {
 	std::cout << "freq: " << key << sep << "char: " << simb << std::endl;
-	//printf("%d%s", key, sep);
 }
 
 #endif // __Node_h
