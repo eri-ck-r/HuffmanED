@@ -7,3 +7,7 @@ x64/
 *.exe
 *.iobj
 *.ipdb
+*.huff
+*.txt
+*.png
+*.jpg

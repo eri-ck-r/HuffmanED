@@ -33,7 +33,7 @@ public:
 };
 
 
-int DEBUG_BITS = 1;
+int DEBUG_BITS = 0;
 
 
 void escrever_binario(uint8_t numero)

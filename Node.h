@@ -14,7 +14,7 @@ public:
 
 	Node() = default;
 
-	Node(int key, char simb);
+	Node(int key, unsigned char simb);
 
 	~Node() = default;
 
@@ -27,7 +27,7 @@ public:
 
 private:
 	int key{};
-	char simb{};
+	unsigned char simb{};
 	Node* parent{};
 	Node* left{};
 	Node* right{};
@@ -38,7 +38,7 @@ private:
 //*************************************
 
 
-Node::Node(int key, char simb) :
+Node::Node(int key, unsigned char simb) :
 	key(key),
 	simb(simb)
 {
