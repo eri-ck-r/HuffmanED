@@ -34,8 +34,6 @@ public:
 
 	MinHeap(std::vector<Node*>);
 
-	~MinHeap() = default;
-
 	void escreve_niveis() const;
 
 	void escreve(const std::string& prefixo = "", int i = 0) const;

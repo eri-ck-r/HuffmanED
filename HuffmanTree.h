@@ -29,7 +29,6 @@ public:
 
   void escreve_ordenado(); // escreve em percurso em-ordem
   void escreve();
-  void escreve_bfs();
 
   int get_leaves(); // devolve nLeaves
   bool go_left();

@@ -94,7 +94,7 @@ void HuffmansAlgorithm::compact(char* argv[])
 	// Compactação em si do "texto" original
 	FILE* original = fopen(argv[2], "rb");
 	uint8_t original_byte;
-	while (fread(&original_byte, 1, 1, original))
+	while (fread(&original_byte, 1, 1, original) == 1)
 	{
 		std::vector<bool> simb_code(table.codes[original_byte]);
 
@@ -180,7 +180,6 @@ void HuffmansAlgorithm::discompact(char* argv[])
 	}
 
 	HuffmanTree tree(treeCode, leaves);
-	tree.escreve_bfs();
 
 	long beginning, end;
 	
